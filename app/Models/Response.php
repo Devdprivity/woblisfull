@@ -11,18 +11,16 @@ class Response extends Model
     use HasFactory;
 
     protected $fillable = [
-        'campaign_id', 'session_id', 'completed', 'latitude', 'longitude', 'address',
-        'city', 'country', 'ip_address', 'user_agent', 'device_info', 'started_at',
-        'completed_at', 'time_spent'
+        'campaign_id', 'session_id', 'status', 'started_at', 'completed_at',
+        'ip_address', 'user_agent', 'referrer', 'metadata', 'completion_time',
+        'completion_percentage'
     ];
 
     protected $casts = [
-        'completed' => 'boolean',
-        'device_info' => 'array',
+        'metadata' => 'array',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
-        'latitude' => 'decimal:8',
-        'longitude' => 'decimal:8',
+        'completion_percentage' => 'decimal:5,2',
     ];
 
     public function campaign()
@@ -42,27 +40,30 @@ class Response extends Model
 
     public function markAsCompleted()
     {
-        $timeSpent = null;
+        $completionTime = null;
         if ($this->started_at) {
             // Calcular tiempo en segundos y convertir a entero
-            $timeSpent = (int) abs(now()->diffInSeconds($this->started_at));
+            $completionTime = (int) abs(now()->diffInSeconds($this->started_at));
         }
 
         $this->update([
-            'completed' => true,
+            'status' => 'completed',
             'completed_at' => now(),
-            'time_spent' => $timeSpent,
+            'completion_time' => $completionTime,
+            'completion_percentage' => 100,
         ]);
     }
 
     public function getLocationAttribute()
     {
-        if ($this->address) {
-            return $this->address;
-        }
-
-        if ($this->latitude && $this->longitude) {
-            return "Lat: {$this->latitude}, Lng: {$this->longitude}";
+        if ($this->metadata && isset($this->metadata['location'])) {
+            $location = $this->metadata['location'];
+            if (isset($location['address'])) {
+                return $location['address'];
+            }
+            if (isset($location['lat']) && isset($location['lng'])) {
+                return "Lat: {$location['lat']}, Lng: {$location['lng']}";
+            }
         }
 
         return 'Ubicación no disponible';
@@ -70,11 +71,11 @@ class Response extends Model
 
     public function scopeCompleted($query)
     {
-        return $query->where('completed', true);
+        return $query->where('status', 'completed');
     }
 
     public function scopeIncomplete($query)
     {
-        return $query->where('completed', false);
+        return $query->where('status', '!=', 'completed');
     }
 }

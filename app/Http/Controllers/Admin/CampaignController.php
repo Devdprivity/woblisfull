@@ -13,11 +13,11 @@ class CampaignController extends Controller
     public function index(Request $request)
     {
         $campaigns = Campaign::with('questions')
-            ->when($request->search, fn($query) => 
+            ->when($request->search, fn($query) =>
                 $query->where('title', 'like', '%' . $request->search . '%')
                     ->orWhere('client_name', 'like', '%' . $request->search . '%')
             )
-            ->when($request->status, fn($query) => 
+            ->when($request->status, fn($query) =>
                 $query->where('status', $request->status)
             )
             ->orderBy('created_at', 'desc')
@@ -30,7 +30,7 @@ class CampaignController extends Controller
             'draft' => Campaign::where('status', 'draft')->count(),
             'completed' => Campaign::where('status', 'completed')->count(),
             'total_responses' => \App\Models\Response::count(),
-            'total_completes' => \App\Models\Response::where('completed', true)->count(),
+            'total_completes' => \App\Models\Response::where('status', 'completed')->count(),
         ];
 
         return Inertia::render('admin/campaigns/index', [

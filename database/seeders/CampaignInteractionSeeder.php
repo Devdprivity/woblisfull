@@ -46,7 +46,7 @@ class CampaignInteractionSeeder extends Seeder
     {
         // Obtener respuestas existentes para calcular métricas realistas
         $responses = Response::where('campaign_id', $campaign->id)->get();
-        $completedResponses = $responses->where('completed', true)->count();
+        $completedResponses = $responses->where('status', 'completed')->count();
         $totalResponses = $responses->count();
 
         // Calcular métricas según el estado de la campaña

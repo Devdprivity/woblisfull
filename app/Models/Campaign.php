@@ -34,7 +34,7 @@ class Campaign extends Model
 
     public function completedResponses()
     {
-        return $this->hasMany(Response::class)->where('completed', true);
+        return $this->hasMany(Response::class)->where('status', 'completed');
     }
 
     public function interactions()
