@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use App\Models\Post;
 use App\Models\Like;
 
@@ -54,8 +55,8 @@ class LikeSeeder extends Seeder
                 $ip = $ips[array_rand($ips)];
 
                 // Verificar que no exista ya un like de este email para este post
-                if (!Like::where('post_id', $post->id)->where('user_email', $email)->exists()) {
-                    Like::create([
+                if (!DB::table('likes')->where('post_id', $post->id)->where('user_email', $email)->exists()) {
+                    DB::table('likes')->insert([
                         'post_id' => $post->id,
                         'user_email' => $email,
                         'user_name' => $name,
@@ -67,14 +68,14 @@ class LikeSeeder extends Seeder
             }
 
             // Actualizar el contador de likes del post
-            $actualLikes = Like::where('post_id', $post->id)->count();
+            $actualLikes = DB::table('likes')->where('post_id', $post->id)->count();
             $post->update(['likes_count' => $actualLikes]);
         }
 
         $this->command->info("✅ Se crearon {$totalLikesCreated} likes para posts.");
         $this->command->info("📊 Likes por post:");
         foreach ($posts as $post) {
-            $likesCount = Like::where('post_id', $post->id)->count();
+            $likesCount = DB::table('likes')->where('post_id', $post->id)->count();
             $this->command->info("   • {$post->title}: {$likesCount} likes");
         }
     }
