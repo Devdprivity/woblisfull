@@ -149,13 +149,13 @@ class CampaignInteractionSeeder extends Seeder
 
     private function updateCampaignStats(Campaign $campaign, array $stats)
     {
+        // Solo actualizar el campo que existe en la tabla campaigns
         $campaign->update([
-            'total_scans' => $stats['qr_scans'],
-            'total_opens' => $stats['page_opens'],
-            'total_starts' => $stats['survey_starts'],
-            'total_completes' => $stats['survey_completions'],
-            'total_incompletes' => $stats['total_responses'] - $stats['survey_completions'],
+            'actual_responses' => $stats['total_responses'],
         ]);
+
+        // Las demás estadísticas se calculan dinámicamente desde las interacciones
+        // cuando sean necesarias en el frontend
     }
 
     private function generateSessionId()
