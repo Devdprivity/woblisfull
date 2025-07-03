@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique(); // client, company_pending, company_active, admin
-            $table->string('display_name');
-            $table->text('description')->nullable();
-            $table->json('permissions')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('roles')) {
+            Schema::create('roles', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->unique(); // client, company_pending, company_active, admin
+                $table->string('display_name');
+                $table->text('description')->nullable();
+                $table->json('permissions')->nullable();
+                $table->boolean('is_active')->default(true);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -11,20 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
-            $table->text('question');
-            $table->string('type'); // text, textarea, radio, checkbox, select, number, email, phone
-            $table->json('options')->nullable(); // Para radio, checkbox, select
-            $table->boolean('required')->default(false);
-            $table->integer('order')->default(0);
-            $table->json('validation_rules')->nullable(); // reglas de validación adicionales
-            $table->text('help_text')->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('questions')) {
+            Schema::create('questions', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->string('type'); // text, multiple_choice, checkbox, rating, date
+                $table->json('options')->nullable(); // Para preguntas de opción múltiple
+                $table->boolean('is_required')->default(false);
+                $table->integer('order')->default(0);
+                $table->json('validation_rules')->nullable();
+                $table->timestamps();
 
-            $table->index(['campaign_id', 'order']);
-        });
+                $table->index(['campaign_id', 'order']);
+            });
+        }
     }
 
     /**

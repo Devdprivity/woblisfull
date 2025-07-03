@@ -11,28 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('responses', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
-            $table->string('session_id')->unique(); // identificador único de la sesión
-            $table->boolean('completed')->default(false);
-            $table->decimal('latitude', 10, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
-            $table->string('address')->nullable(); // dirección obtenida de Google Maps
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
-            $table->string('ip_address')->nullable();
-            $table->text('user_agent')->nullable();
-            $table->json('device_info')->nullable(); // información del dispositivo
-            $table->timestamp('started_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
-            $table->integer('time_spent')->nullable(); // tiempo en segundos
-            $table->timestamps();
+        if (!Schema::hasTable('responses')) {
+            Schema::create('responses', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('campaign_id')->constrained()->onDelete('cascade');
+                $table->string('session_id')->unique(); // identificador único de la sesión
+                $table->string('status')->default('started'); // started, completed, abandoned
+                $table->datetime('started_at');
+                $table->datetime('completed_at')->nullable();
+                $table->string('ip_address')->nullable();
+                $table->string('user_agent')->nullable();
+                $table->string('referrer')->nullable();
+                $table->json('metadata')->nullable(); // datos adicionales
+                $table->integer('completion_time')->nullable(); // tiempo en segundos
+                $table->decimal('completion_percentage', 5, 2)->default(0);
+                $table->timestamps();
 
-            $table->index(['campaign_id', 'completed']);
-            $table->index(['campaign_id', 'created_at']);
-            $table->index('session_id');
-        });
+                $table->index(['campaign_id', 'status']);
+                $table->index(['started_at', 'completed_at']);
+            });
+        }
     }
 
     /**

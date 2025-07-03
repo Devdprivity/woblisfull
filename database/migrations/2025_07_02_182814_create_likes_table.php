@@ -11,18 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('likes', function (Blueprint $table) {
-            $table->id();
-            $table->string('likeable_type'); // Post, Comment
-            $table->unsignedBigInteger('likeable_id');
-            $table->string('ip_address');
-            $table->string('user_agent')->nullable();
-            $table->string('session_id')->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('likes')) {
+            Schema::create('likes', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('post_id')->constrained()->onDelete('cascade');
+                $table->string('user_email');
+                $table->string('user_name')->nullable();
+                $table->string('ip_address')->nullable();
+                $table->timestamp('created_at');
 
-            $table->index(['likeable_type', 'likeable_id']);
-            $table->unique(['likeable_type', 'likeable_id', 'ip_address', 'session_id'], 'unique_like');
-        });
+                $table->unique(['post_id', 'user_email']);
+                $table->index(['post_id', 'created_at']);
+            });
+        }
     }
 
     /**

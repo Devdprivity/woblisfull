@@ -12,24 +12,60 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Social auth fields
-            $table->string('google_id')->nullable()->unique();
-            $table->string('avatar')->nullable();
-            $table->string('provider')->nullable(); // google, email
+            // Social login fields
+            if (!Schema::hasColumn('users', 'provider')) {
+                $table->string('provider')->nullable()->after('email'); // google, facebook, etc.
+            }
+            if (!Schema::hasColumn('users', 'provider_id')) {
+                $table->string('provider_id')->nullable()->after('provider');
+            }
+            if (!Schema::hasColumn('users', 'avatar')) {
+                $table->string('avatar')->nullable()->after('provider_id');
+            }
 
             // Company fields
-            $table->enum('account_type', ['client', 'company'])->default('client');
-            $table->string('company_name')->nullable();
-            $table->string('company_rut')->nullable();
-            $table->string('company_address')->nullable();
-            $table->string('company_phone')->nullable();
-            $table->foreignId('plan_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('role_id')->nullable()->constrained()->onDelete('set null');
+            if (!Schema::hasColumn('users', 'company_name')) {
+                $table->string('company_name')->nullable()->after('avatar');
+            }
+            if (!Schema::hasColumn('users', 'company_rut')) {
+                $table->string('company_rut')->nullable()->after('company_name');
+            }
+            if (!Schema::hasColumn('users', 'company_address')) {
+                $table->text('company_address')->nullable()->after('company_rut');
+            }
+            if (!Schema::hasColumn('users', 'company_phone')) {
+                $table->string('company_phone')->nullable()->after('company_address');
+            }
+            if (!Schema::hasColumn('users', 'company_industry')) {
+                $table->string('company_industry')->nullable()->after('company_phone');
+            }
+            if (!Schema::hasColumn('users', 'company_size')) {
+                $table->string('company_size')->nullable()->after('company_industry'); // small, medium, large
+            }
 
-            // Account status
-            $table->enum('status', ['pending', 'active', 'suspended'])->default('active');
-            $table->timestamp('activated_at')->nullable();
-            $table->text('activation_notes')->nullable();
+            // Account type and status
+            if (!Schema::hasColumn('users', 'account_type')) {
+                $table->string('account_type')->default('client')->after('company_size'); // client, company, admin
+            }
+            if (!Schema::hasColumn('users', 'status')) {
+                $table->string('status')->default('active')->after('account_type'); // active, pending, suspended
+            }
+
+            // Role relationship
+            if (!Schema::hasColumn('users', 'role_id')) {
+                $table->foreignId('role_id')->nullable()->after('status')->constrained('roles')->onDelete('set null');
+            }
+
+            // Additional fields
+            if (!Schema::hasColumn('users', 'phone')) {
+                $table->string('phone')->nullable()->after('role_id');
+            }
+            if (!Schema::hasColumn('users', 'timezone')) {
+                $table->string('timezone')->default('America/Santiago')->after('phone');
+            }
+            if (!Schema::hasColumn('users', 'language')) {
+                $table->string('language')->default('es')->after('timezone');
+            }
         });
     }
 
@@ -40,19 +76,11 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'google_id',
-                'avatar',
-                'provider',
-                'account_type',
-                'company_name',
-                'company_rut',
-                'company_address',
-                'company_phone',
-                'plan_id',
-                'role_id',
-                'status',
-                'activated_at',
-                'activation_notes'
+                'provider', 'provider_id', 'avatar',
+                'company_name', 'company_rut', 'company_address',
+                'company_phone', 'company_industry', 'company_size',
+                'account_type', 'status', 'role_id', 'phone',
+                'timezone', 'language'
             ]);
         });
     }

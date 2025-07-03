@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plans', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('category'); // pyme, corp
-            $table->integer('price'); // price in CLP
-            $table->text('description');
-            $table->integer('responses_included');
-            $table->string('delivery_time');
-            $table->json('features')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->integer('sort_order')->default(0);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('plans')) {
+            Schema::create('plans', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('slug')->unique();
+                $table->text('description')->nullable();
+                $table->decimal('price', 10, 2);
+                $table->string('billing_cycle'); // monthly, yearly
+                $table->json('features')->nullable();
+                $table->boolean('is_active')->default(true);
+                $table->boolean('is_featured')->default(false);
+                $table->integer('sort_order')->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

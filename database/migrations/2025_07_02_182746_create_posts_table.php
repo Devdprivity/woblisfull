@@ -11,26 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('excerpt');
-            $table->longText('content');
-            $table->string('featured_image')->nullable();
-            $table->string('status')->default('published'); // published, draft, archived
-            $table->string('author_name')->default('Woblis Team');
-            $table->string('author_email')->nullable();
-            $table->json('tags')->nullable();
-            $table->integer('views_count')->default(0);
-            $table->integer('likes_count')->default(0);
-            $table->integer('comments_count')->default(0);
-            $table->timestamp('published_at')->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('posts')) {
+            Schema::create('posts', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->string('slug')->unique();
+                $table->text('content');
+                $table->text('excerpt')->nullable();
+                $table->string('status')->default('published'); // draft, published, archived
+                $table->string('type')->default('post'); // post, page, announcement
+                $table->string('author_name');
+                $table->string('author_email');
+                $table->string('featured_image')->nullable();
+                $table->json('meta_data')->nullable();
+                $table->integer('views_count')->default(0);
+                $table->integer('likes_count')->default(0);
+                $table->integer('comments_count')->default(0);
+                $table->boolean('allow_comments')->default(true);
+                $table->timestamp('published_at')->nullable();
+                $table->timestamps();
 
-            $table->index(['status', 'published_at']);
-            $table->index('slug');
-        });
+                $table->index(['status', 'type']);
+                $table->index(['published_at', 'status']);
+                $table->index('slug');
+            });
+        }
     }
 
     /**

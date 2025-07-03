@@ -11,30 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('campaigns', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->string('client_name');
-            $table->string('client_email');
-            $table->string('client_phone')->nullable();
-            $table->string('status')->default('draft'); // draft, active, paused, completed
-            $table->string('slug')->unique();
-            $table->string('qr_code')->nullable();
-            $table->json('settings')->nullable(); // configuraciones adicionales
-            $table->integer('max_responses')->nullable(); // límite máximo de respuestas
-            $table->datetime('start_date')->nullable();
-            $table->datetime('end_date')->nullable();
-            $table->integer('total_scans')->default(0);
-            $table->integer('total_opens')->default(0);
-            $table->integer('total_starts')->default(0);
-            $table->integer('total_completes')->default(0);
-            $table->integer('total_incompletes')->default(0);
-            $table->timestamps();
+        if (!Schema::hasTable('campaigns')) {
+            Schema::create('campaigns', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('slug')->unique();
+                $table->text('description')->nullable();
+                $table->string('type'); // survey, quiz, poll
+                $table->string('status')->default('draft'); // draft, active, paused, completed
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->date('start_date')->nullable();
+                $table->date('end_date')->nullable();
+                $table->json('settings')->nullable();
+                $table->integer('target_responses')->nullable();
+                $table->integer('actual_responses')->default(0);
+                $table->timestamps();
 
-            $table->index(['status', 'created_at']);
-            $table->index('client_email');
-        });
+                $table->index(['status', 'type']);
+                $table->index(['user_id', 'status']);
+                $table->index(['start_date', 'end_date']);
+            });
+        }
     }
 
     /**
