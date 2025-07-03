@@ -256,6 +256,10 @@ class SurveyResponseSeeder extends Seeder
         $start = $campaign->start_date ?? now()->subDays(30);
         $end = $campaign->status === 'completed' ? ($campaign->end_date ?? now()) : now();
 
-        return fake()->dateTimeBetween($start, $end);
+        $startTimestamp = $start->timestamp;
+        $endTimestamp = $end->timestamp;
+        $randomTimestamp = rand($startTimestamp, $endTimestamp);
+
+        return \Carbon\Carbon::createFromTimestamp($randomTimestamp);
     }
 }
