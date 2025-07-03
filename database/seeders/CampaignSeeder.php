@@ -24,13 +24,14 @@ class CampaignSeeder extends Seeder
 
         $campaigns = [
             [
-                'title' => 'Satisfacción del Cliente - Restaurante El Buen Sabor',
+                'name' => 'Satisfacción del Cliente - Restaurante El Buen Sabor',
                 'description' => 'Encuesta para medir la satisfacción de los clientes con nuestro servicio de restaurante y calidad de la comida.',
                 'company_email' => 'maria@techsolutions.cl', // TechSolutions SpA
+                'type' => 'survey',
                 'status' => 'active',
-                'max_responses' => 200,
-                'start_date' => now()->subDays(15),
-                'end_date' => now()->addDays(15),
+                'target_responses' => 200,
+                'start_date' => now()->subDays(15)->format('Y-m-d'),
+                'end_date' => now()->addDays(15)->format('Y-m-d'),
                 'settings' => [
                     'allow_anonymous' => true,
                     'require_location' => true,
@@ -38,13 +39,14 @@ class CampaignSeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'Evaluación de Experiencia de Compra - TechStore',
+                'name' => 'Evaluación de Experiencia de Compra - TechStore',
                 'description' => 'Conocer la experiencia de compra de nuestros clientes en nuestra tienda de tecnología online.',
                 'company_email' => 'ana@consultaplus.cl', // Consulta Plus Chile
+                'type' => 'survey',
                 'status' => 'active',
-                'max_responses' => 500,
-                'start_date' => now()->subDays(30),
-                'end_date' => now()->addDays(30),
+                'target_responses' => 500,
+                'start_date' => now()->subDays(30)->format('Y-m-d'),
+                'end_date' => now()->addDays(30)->format('Y-m-d'),
                 'settings' => [
                     'allow_anonymous' => false,
                     'require_location' => false,
@@ -52,13 +54,14 @@ class CampaignSeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'Estudio de Mercado - Productos Ecológicos',
+                'name' => 'Estudio de Mercado - Productos Ecológicos',
                 'description' => 'Investigación sobre preferencias del consumidor chileno respecto a productos ecológicos y sustentables.',
                 'company_email' => 'maria@techsolutions.cl', // TechSolutions SpA
+                'type' => 'survey',
                 'status' => 'completed',
-                'max_responses' => 1000,
-                'start_date' => now()->subDays(60),
-                'end_date' => now()->subDays(10),
+                'target_responses' => 1000,
+                'start_date' => now()->subDays(60)->format('Y-m-d'),
+                'end_date' => now()->subDays(10)->format('Y-m-d'),
                 'settings' => [
                     'allow_anonymous' => true,
                     'require_location' => true,
@@ -66,13 +69,14 @@ class CampaignSeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'Feedback Aplicación Móvil - DeliveryFast',
+                'name' => 'Feedback Aplicación Móvil - DeliveryFast',
                 'description' => 'Recopilar feedback sobre la nueva versión de nuestra aplicación de delivery.',
                 'company_email' => 'ana@consultaplus.cl', // Consulta Plus Chile
+                'type' => 'survey',
                 'status' => 'paused',
-                'max_responses' => 300,
-                'start_date' => now()->subDays(5),
-                'end_date' => now()->addDays(25),
+                'target_responses' => 300,
+                'start_date' => now()->subDays(5)->format('Y-m-d'),
+                'end_date' => now()->addDays(25)->format('Y-m-d'),
                 'settings' => [
                     'allow_anonymous' => true,
                     'require_location' => false,
@@ -80,13 +84,14 @@ class CampaignSeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'Evaluación de Servicios Bancarios - Banco Digital',
+                'name' => 'Evaluación de Servicios Bancarios - Banco Digital',
                 'description' => 'Encuesta para evaluar la satisfacción con nuestros servicios bancarios digitales.',
                 'company_email' => 'maria@techsolutions.cl', // TechSolutions SpA
+                'type' => 'survey',
                 'status' => 'active',
-                'max_responses' => 150,
-                'start_date' => now()->subDays(5),
-                'end_date' => now()->addDays(35),
+                'target_responses' => 150,
+                'start_date' => now()->subDays(5)->format('Y-m-d'),
+                'end_date' => now()->addDays(35)->format('Y-m-d'),
                 'settings' => [
                     'allow_anonymous' => false,
                     'require_location' => true,
@@ -94,13 +99,14 @@ class CampaignSeeder extends Seeder
                 ],
             ],
             [
-                'title' => 'Investigación de Hábitos de Consumo - Mall Plaza',
+                'name' => 'Investigación de Hábitos de Consumo - Mall Plaza',
                 'description' => 'Estudio sobre los hábitos de consumo y preferencias de los visitantes del mall.',
                 'company_email' => 'ana@consultaplus.cl', // Consulta Plus Chile
+                'type' => 'survey',
                 'status' => 'active',
-                'max_responses' => 800,
-                'start_date' => now()->subDays(20),
-                'end_date' => now()->addDays(40),
+                'target_responses' => 800,
+                'start_date' => now()->subDays(20)->format('Y-m-d'),
+                'end_date' => now()->addDays(40)->format('Y-m-d'),
                 'settings' => [
                     'allow_anonymous' => true,
                     'require_location' => true,
@@ -118,7 +124,7 @@ class CampaignSeeder extends Seeder
                 continue;
             }
 
-            $slug = Str::slug($campaignData['title']);
+            $slug = Str::slug($campaignData['name']);
             $originalSlug = $slug;
             $counter = 1;
 
@@ -129,15 +135,13 @@ class CampaignSeeder extends Seeder
             }
 
             Campaign::create([
-                'title' => $campaignData['title'],
+                'name' => $campaignData['name'],
                 'description' => $campaignData['description'],
-                'client_name' => $company->name,
-                'client_email' => $company->email,
-                'client_phone' => $company->company_phone,
+                'type' => $campaignData['type'],
+                'user_id' => $company->id,
                 'status' => $campaignData['status'],
                 'slug' => $slug,
-                'qr_code' => route('survey.show', $slug),
-                'max_responses' => $campaignData['max_responses'],
+                'target_responses' => $campaignData['target_responses'],
                 'start_date' => $campaignData['start_date'],
                 'end_date' => $campaignData['end_date'],
                 'settings' => $campaignData['settings'],
@@ -149,7 +153,7 @@ class CampaignSeeder extends Seeder
 
         // Mostrar resumen de campañas por empresa
         $companiesWithCampaigns = $companies->map(function ($company) {
-            $campaignCount = Campaign::where('client_email', $company->email)->count();
+            $campaignCount = Campaign::where('user_id', $company->id)->count();
             return [
                 'company' => $company->company_name,
                 'campaigns' => $campaignCount

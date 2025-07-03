@@ -80,7 +80,10 @@ Tendencia + datos reales = decisiones con visión de futuro.
                 'featured_image' => null,
                 'author_name' => 'Woblis Team',
                 'author_email' => 'team@woblis.com',
-                'tags' => ['tendencias', 'consumidor', '2030', 'futuro', 'tecnología', 'sostenibilidad'],
+                'meta_data' => [
+                    'tags' => ['tendencias', 'consumidor', '2030', 'futuro', 'tecnología', 'sostenibilidad'],
+                    'category' => 'tendencias'
+                ],
                 'status' => 'published',
                 'views_count' => rand(150, 500),
                 'likes_count' => rand(20, 80),
@@ -159,7 +162,10 @@ Conversemos. En Woblis estamos pa\' apoyarte.
                 'featured_image' => null,
                 'author_name' => 'Woblis Team',
                 'author_email' => 'team@woblis.com',
-                'tags' => ['emprendimiento', 'pyme', 'chile', 'consejos', 'negocios', 'startups'],
+                'meta_data' => [
+                    'tags' => ['emprendimiento', 'pyme', 'chile', 'consejos', 'negocios', 'startups'],
+                    'category' => 'emprendimiento'
+                ],
                 'status' => 'published',
                 'views_count' => rand(200, 600),
                 'likes_count' => rand(30, 90),
@@ -197,17 +203,19 @@ La oportunidad no está solo en saber cuánto se vendió, sino en entender por q
 ¿Y cómo logramos eso?
 En Woblis ayudamos a las marcas a detectar patrones, percepciones y oportunidades en movimiento, justo en el trayecto donde el consumidor decide.
 
-¿Quieres entender mejor a tu audiencia?
-Conversemos.',
+¿Quieres entender mejor a tu audiencia?',
                 'featured_image' => null,
                 'author_name' => 'Woblis Team',
                 'author_email' => 'team@woblis.com',
-                'tags' => ['ecommerce', 'chile', '2025', 'recuperación', 'datos', 'CCS', 'ventas digitales'],
+                'meta_data' => [
+                    'tags' => ['ecommerce', 'chile', 'ventas', 'ccs', 'retail', 'tendencias'],
+                    'category' => 'ecommerce'
+                ],
                 'status' => 'published',
-                'views_count' => rand(300, 800),
-                'likes_count' => rand(40, 120),
+                'views_count' => rand(100, 400),
+                'likes_count' => rand(15, 60),
                 'comments_count' => 0,
-                'published_at' => Carbon::create(2025, 6, 5, 14, 15, 0),
+                'published_at' => Carbon::create(2025, 6, 8, 8, 0, 0),
             ],
         ];
 
