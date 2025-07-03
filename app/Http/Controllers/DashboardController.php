@@ -65,26 +65,26 @@ class DashboardController extends Controller
                 'completed' => Campaign::where('status', 'completed')->count(),
                 'draft' => Campaign::where('status', 'draft')->count(),
                 'total_responses' => Response::count(),
-                'completed_responses' => Response::where('completed', true)->count(),
+                'completed_responses' => Response::where('status', 'completed')->count(),
                 'responses_this_month' => Response::whereMonth('created_at', now()->month)->count(),
             ],
             'recent_activity' => [
                 'recent_posts' => Post::latest()->take(3)->get(),
                 'recent_campaigns' => Campaign::latest()->take(3)->get(),
-                'recent_responses' => Response::with('campaign')->where('completed', true)->latest()->take(5)->get(),
+                'recent_responses' => Response::with('campaign')->where('status', 'completed')->latest()->take(5)->get(),
             ]
         ];
 
         // Calcular métricas específicas del usuario si es empresa
         $userStats = null;
         if (auth()->check() && auth()->user()->account_type === 'company' && auth()->user()->status === 'active') {
-            $userCampaigns = Campaign::where('client_email', auth()->user()->email)->get();
+            $userCampaigns = Campaign::where('user_id', auth()->user()->id)->get();
             $userStats = [
                 'my_campaigns' => $userCampaigns->count(),
                 'my_active_campaigns' => $userCampaigns->where('status', 'active')->count(),
                 'my_total_responses' => Response::whereIn('campaign_id', $userCampaigns->pluck('id'))->count(),
                 'my_completed_responses' => Response::whereIn('campaign_id', $userCampaigns->pluck('id'))
-                    ->where('completed', true)->count(),
+                    ->where('status', 'completed')->count(),
                 'my_campaigns_list' => $userCampaigns->take(5),
             ];
         }
@@ -106,11 +106,11 @@ class DashboardController extends Controller
         $myCompletionRate = 0;
 
         if (auth()->check() && auth()->user()->account_type === 'company') {
-            $userCampaigns = Campaign::where('client_email', auth()->user()->email)->get();
+            $userCampaigns = Campaign::where('user_id', auth()->user()->id)->get();
             $myCampaigns = $userCampaigns->count();
             $myResponses = Response::whereIn('campaign_id', $userCampaigns->pluck('id'))->count();
             $myCompletedResponses = Response::whereIn('campaign_id', $userCampaigns->pluck('id'))
-                ->where('completed', true)->count();
+                ->where('status', 'completed')->count();
             $myCompletionRate = $myResponses > 0 ? round(($myCompletedResponses / $myResponses) * 100, 1) : 0;
         }
 
@@ -264,7 +264,7 @@ class DashboardController extends Controller
         $exportData = [
             'summary' => [
                 'total_users' => User::count(),
-                'total_companies' => User::where('role', 'company')->count(),
+                'total_companies' => User::where('account_type', 'company')->count(),
                 'total_campaigns' => Campaign::count(),
                 'total_responses' => Response::count(),
                 'total_posts' => Post::count(),
