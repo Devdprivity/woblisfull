@@ -220,7 +220,18 @@ En Woblis ayudamos a las marcas a detectar patrones, percepciones y oportunidade
         ];
 
         foreach ($posts as $postData) {
-            Post::create($postData);
+            // Convertir meta_data a JSON si es array
+            if (isset($postData['meta_data']) && is_array($postData['meta_data'])) {
+                $postData['meta_data'] = json_encode($postData['meta_data']);
+            }
+
+            Post::updateOrCreate(
+                ['slug' => $postData['slug']],
+                $postData
+            );
         }
+
+        $createdCount = Post::count();
+        $this->command->info("✅ {$createdCount} posts verificados/creados exitosamente.");
     }
 }
