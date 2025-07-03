@@ -33,20 +33,26 @@ class SurveyResponseSeeder extends Seeder
         for ($i = 0; $i < $responseCount; $i++) {
             $isCompleted = $this->shouldBeCompleted($campaign);
             $location = $this->getRandomChileanLocation();
+            $startTime = $this->getRandomStartTime($campaign);
+            $completedTime = $isCompleted ?
+                $startTime->copy()->addMinutes(rand(2, 25)) : null;
 
             $response = Response::create([
                 'campaign_id' => $campaign->id,
                 'session_id' => Str::uuid(),
-                'completed' => $isCompleted,
-                'latitude' => $location['lat'],
-                'longitude' => $location['lng'],
-                'address' => $location['address'],
-                'city' => $location['city'],
-                'country' => 'Chile',
+                'status' => $isCompleted ? 'completed' : (rand(1, 10) > 7 ? 'abandoned' : 'started'),
+                'started_at' => $startTime,
+                'completed_at' => $completedTime,
                 'ip_address' => $this->getRandomIP(),
                 'user_agent' => $this->getRandomUserAgent(),
-                'started_at' => $this->getRandomStartTime($campaign),
-                'completed_at' => $isCompleted ? now()->subDays(rand(0, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59)) : null,
+                'referrer' => rand(1, 10) <= 8 ? 'qr_code' : 'direct_link',
+                'metadata' => json_encode([
+                    'location' => $location,
+                    'device_type' => ['mobile', 'desktop', 'tablet'][rand(0, 2)],
+                    'browser' => ['Chrome', 'Safari', 'Firefox'][rand(0, 2)],
+                ]),
+                'completion_time' => $completedTime ? $startTime->diffInSeconds($completedTime) : null,
+                'completion_percentage' => $isCompleted ? 100 : rand(10, 90),
             ]);
 
             if ($isCompleted || rand(1, 10) > 3) { // 70% de probabilidad de al menos responder algunas preguntas
