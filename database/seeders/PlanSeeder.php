@@ -17,9 +17,11 @@ class PlanSeeder extends Seeder
             [
                 'name' => 'Start Pyme',
                 'slug' => 'start-pyme',
-                'price' => 120000.00,
-                'billing_cycle' => 'monthly',
+                'category' => 'pyme',
+                'price' => 120000,
                 'description' => 'Tu primer acercamiento a datos reales en terreno. 100 respuestas validadas, ideal para explorar el modelo, medir impacto inicial o tomar decisiones puntuales sin comprometer tu presupuesto.',
+                'responses_included' => 100,
+                'delivery_time' => '48 horas hábiles',
                 'features' => [
                     '100 respuestas validadas',
                     'Ideal para explorar el modelo',
@@ -35,9 +37,11 @@ class PlanSeeder extends Seeder
             [
                 'name' => 'Pro Pyme',
                 'slug' => 'pro-pyme',
-                'price' => 330000.00,
-                'billing_cycle' => 'monthly',
+                'category' => 'pyme',
+                'price' => 330000,
                 'description' => 'Datos más robustos para decisiones más precisas. 300 respuestas validadas con segmentación por zona incluida. Ideal para escalar tu análisis, detectar patrones y crecer con base real.',
+                'responses_included' => 300,
+                'delivery_time' => '48 horas hábiles',
                 'features' => [
                     '300 respuestas validadas',
                     'Segmentación por zona incluida',
@@ -53,9 +57,11 @@ class PlanSeeder extends Seeder
             [
                 'name' => 'Test Lab',
                 'slug' => 'test-lab',
-                'price' => 500000.00,
-                'billing_cycle' => 'monthly',
+                'category' => 'corp',
+                'price' => 500000,
                 'description' => 'Lanza un piloto validado, sin burocracia ni esperas. 500 respuestas rápidas y confiables para testear campañas, conceptos o productos con datos reales.',
+                'responses_included' => 500,
+                'delivery_time' => '72 horas hábiles',
                 'features' => [
                     '500 respuestas rápidas y confiables',
                     'Testear campañas',
@@ -71,9 +77,11 @@ class PlanSeeder extends Seeder
             [
                 'name' => 'Woblis Max',
                 'slug' => 'woblis-max',
-                'price' => 950000.00,
-                'billing_cycle' => 'monthly',
+                'category' => 'corp',
+                'price' => 950000,
                 'description' => '1.000 respuestas reales para respaldar tus decisiones estratégicas. Data validada, lista para presentación en comités o directorios. Ideal para evaluar campañas, comparar resultados y hacer benchmarking con confianza.',
+                'responses_included' => 1000,
+                'delivery_time' => '4 días hábiles',
                 'features' => [
                     '1.000 respuestas reales',
                     'Data validada para presentaciones',
@@ -90,9 +98,11 @@ class PlanSeeder extends Seeder
             [
                 'name' => 'Woblis Ultra',
                 'slug' => 'woblis-ultra',
-                'price' => 2200000.00,
-                'billing_cycle' => 'monthly',
+                'category' => 'corp',
+                'price' => 2200000,
                 'description' => 'Obtén 3.000 respuestas segmentadas, visualizadas en un dashboard, junto a un informe con recomendaciones clave para tu equipo.',
+                'responses_included' => 3000,
+                'delivery_time' => '15 días hábiles',
                 'features' => [
                     '3.000 respuestas segmentadas',
                     'Dashboard con visualizaciones',
@@ -113,5 +123,10 @@ class PlanSeeder extends Seeder
                 $planData
             );
         }
+
+        $this->command->info('✅ Planes creados/actualizados exitosamente.');
+        $this->command->info('📊 Total de planes: ' . Plan::count());
+        $this->command->info('🏢 Planes PYME: ' . Plan::where('category', 'pyme')->count());
+        $this->command->info('🏭 Planes CORP: ' . Plan::where('category', 'corp')->count());
     }
 }
