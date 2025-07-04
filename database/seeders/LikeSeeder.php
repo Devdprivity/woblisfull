@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Like;
-use Faker\Factory as Faker;
 
 class LikeSeeder extends Seeder
 {
@@ -17,7 +16,7 @@ class LikeSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
+        $faker = \Faker\Factory::create('es_ES');
         $posts = Post::all();
         $comments = Comment::all();
 
