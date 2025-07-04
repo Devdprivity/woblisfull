@@ -21,6 +21,7 @@ export interface NavItem {
     icon?: LucideIcon | null;
     isActive?: boolean;
     type?: 'header' | 'item';
+    target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
 export interface Role {
