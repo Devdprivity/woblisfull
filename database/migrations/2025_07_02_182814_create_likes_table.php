@@ -19,15 +19,28 @@ return new class extends Migration
                 $table->string('user_agent')->nullable();
                 $table->string('session_id')->nullable();
                 $table->timestamps();
-
-                // Índices para mejorar el rendimiento
-                $table->index(['likeable_type', 'likeable_id']);
-                $table->index('created_at');
-
-                // Evitar likes duplicados por sesión/IP
-                $table->unique(['likeable_type', 'likeable_id', 'ip_address', 'session_id'], 'unique_like');
             });
         }
+
+        // Verificar y crear índices si no existen
+        Schema::table('likes', function (Blueprint $table) {
+            // Eliminar índices si existen
+            try {
+                $table->dropIndex('likes_likeable_type_likeable_id_index');
+            } catch (\Exception $e) {
+                // El índice no existía, continuamos
+            }
+
+            try {
+                $table->dropIndex('unique_like');
+            } catch (\Exception $e) {
+                // El índice no existía, continuamos
+            }
+
+            // Crear nuevos índices
+            $table->index(['likeable_type', 'likeable_id']);
+            $table->unique(['likeable_type', 'likeable_id', 'ip_address', 'session_id'], 'unique_like');
+        });
     }
 
     /**
