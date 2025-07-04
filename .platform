@@ -7,11 +7,18 @@
     },
     "deploy": {
         "commands": [
+            "mkdir -p storage/framework/views",
+            "mkdir -p storage/framework/cache",
+            "mkdir -p storage/framework/sessions",
+            "mkdir -p storage/logs",
+            "mkdir -p storage/app/public",
+            "mkdir -p bootstrap/cache",
+            "chmod -R 755 storage",
+            "chmod -R 755 bootstrap/cache",
             "php artisan migrate --force",
             "php artisan db:seed --force",
             "php artisan config:cache",
             "php artisan route:cache",
-            "php artisan view:cache",
             "php artisan storage:link"
         ]
     }
