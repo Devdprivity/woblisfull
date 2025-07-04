@@ -25,6 +25,10 @@ Route::get('/quieres-ser-woblis', function () {
     return Inertia::render('drivers');
 })->name('drivers');
 
+Route::get('/contacto', function () {
+    return Inertia::render('contact');
+})->name('contact');
+
 // Blog routes
 Route::prefix('woblog')->name('blog.')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('index');

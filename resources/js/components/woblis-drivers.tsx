@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import WoblisHeader from './woblis-header';
-import WoblisFooter from './woblis-footer';
 
 export default function WoblisDrivers() {
     const [formData, setFormData] = useState({
@@ -62,12 +60,10 @@ export default function WoblisDrivers() {
     ];
 
     return (
-        <div className="min-h-screen bg-black">
-            <WoblisHeader />
-
+        <>
             {/* Hero Section */}
-            <section className="pt-20 pb-16 bg-black text-white">
-                <div className="container mx-auto px-8">
+            <section className="relative min-h-screen flex items-center bg-black text-white">
+                <div className="container mx-auto px-8 py-32">
                     <div className="flex flex-col lg:flex-row items-center gap-12">
                         {/* Image */}
                         <div className="lg:w-1/3">
@@ -315,8 +311,6 @@ export default function WoblisDrivers() {
                     </div>
                 </div>
             </section>
-
-            <WoblisFooter />
-        </div>
+        </>
     );
 }
