@@ -17,18 +17,35 @@ class Post extends Model
         'content',
         'featured_image',
         'status',
+        'type',
         'author_name',
         'author_email',
         'tags',
+        'meta_data',
         'views_count',
         'likes_count',
         'comments_count',
+        'allow_comments',
         'published_at',
     ];
 
     protected $casts = [
         'tags' => 'array',
+        'meta_data' => 'array',
+        'allow_comments' => 'boolean',
         'published_at' => 'datetime',
+        'views_count' => 'integer',
+        'likes_count' => 'integer',
+        'comments_count' => 'integer',
+    ];
+
+    protected $attributes = [
+        'status' => 'draft',
+        'type' => 'post',
+        'views_count' => 0,
+        'likes_count' => 0,
+        'comments_count' => 0,
+        'allow_comments' => true,
     ];
 
     protected static function boot()
@@ -39,7 +56,7 @@ class Post extends Model
             if (empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
             }
-            if (empty($post->published_at)) {
+            if ($post->status === 'published' && empty($post->published_at)) {
                 $post->published_at = now();
             }
         });

@@ -18,11 +18,12 @@ return new class extends Migration
                 $table->string('slug')->unique();
                 $table->text('content');
                 $table->text('excerpt')->nullable();
-                $table->string('status')->default('published'); // draft, published, archived
+                $table->string('status')->default('draft'); // draft, published, archived
                 $table->string('type')->default('post'); // post, page, announcement
                 $table->string('author_name');
-                $table->string('author_email');
+                $table->string('author_email')->nullable();
                 $table->string('featured_image')->nullable();
+                $table->json('tags')->nullable();
                 $table->json('meta_data')->nullable();
                 $table->integer('views_count')->default(0);
                 $table->integer('likes_count')->default(0);

@@ -15,13 +15,15 @@ export default function AppLayoutTemplate({
 }: AppLayoutTemplateProps) {
     return (
         <AppShell variant="sidebar">
-            <div className="min-h-screen bg-black">
-                <AppHeader />
+            <div className="flex min-h-screen bg-black">
                 <AppSidebar />
-                <main className="flex-1 pb-16 md:pb-0">
-                    {children}
-                </main>
-                <MobileNav />
+                <div className="flex-1">
+                    <AppHeader />
+                    <main className="pl-0 lg:pl-72">
+                        {children}
+                    </main>
+                    <MobileNav />
+                </div>
             </div>
         </AppShell>
     );
