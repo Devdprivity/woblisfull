@@ -6,7 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Post;
+use App\Models\Comment;
 use App\Models\Like;
+use Faker\Factory as Faker;
 
 class LikeSeeder extends Seeder
 {
@@ -15,68 +17,87 @@ class LikeSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
         $posts = Post::all();
+        $comments = Comment::all();
 
         if ($posts->isEmpty()) {
             $this->command->error('No hay posts disponibles. Ejecuta PostSeeder primero.');
             return;
         }
 
-        $ips = [
-            '192.168.1.1', '10.0.0.1', '172.16.0.1', '203.0.113.1', '198.51.100.1',
-            '192.0.2.1', '203.0.113.50', '198.51.100.50', '192.168.1.50', '10.0.0.50',
-            '172.16.0.50', '203.0.113.100', '198.51.100.100', '192.168.1.100', '10.0.0.100',
-            '203.0.113.150', '198.51.100.150', '192.168.1.150', '10.0.0.150', '172.16.0.150',
-        ];
-
-        $emails = [
-            'user1@example.com', 'user2@example.com', 'user3@example.com', 'user4@example.com',
-            'user5@example.com', 'user6@example.com', 'user7@example.com', 'user8@example.com',
-            'user9@example.com', 'user10@example.com', 'maria@gmail.com', 'carlos@outlook.com',
-            'ana@yahoo.com', 'roberto@gmail.com', 'gabriela@hotmail.com', 'pedro@gmail.com',
-            'lucia@outlook.com', 'diego@yahoo.com', 'sofia@gmail.com', 'andres@hotmail.com',
-        ];
-
-        $names = [
-            'María García', 'Carlos López', 'Ana Martínez', 'Roberto Silva', 'Gabriela Torres',
-            'Pedro Rodríguez', 'Lucía Fernández', 'Diego Morales', 'Sofía Herrera', 'Andrés Castillo',
-            'Carmen Jiménez', 'Miguel Ruiz', 'Isabel Vargas', 'Francisco Ortega', 'Pilar Ramos',
-        ];
+        if ($comments->isEmpty()) {
+            $this->command->error('No hay comentarios disponibles. Ejecuta CommentSeeder primero.');
+            return;
+        }
 
         $totalLikesCreated = 0;
 
         // Crear likes para posts
         foreach ($posts as $post) {
-            $numberOfLikes = rand(10, 80); // Entre 10 y 80 likes por post
+            $numberOfLikes = rand(10, 30); // Entre 10 y 30 likes por post
 
             for ($i = 0; $i < $numberOfLikes; $i++) {
-                $email = $emails[array_rand($emails)];
-                $name = $names[array_rand($names)];
-                $ip = $ips[array_rand($ips)];
+                $ip = $faker->ipv4;
+                $userAgent = $faker->userAgent;
+                $sessionId = $faker->uuid;
 
-                // Verificar que no exista ya un like de este email para este post
-                if (!DB::table('likes')->where('post_id', $post->id)->where('user_email', $email)->exists()) {
-                    DB::table('likes')->insert([
-                        'post_id' => $post->id,
-                        'user_email' => $email,
-                        'user_name' => $name,
+                // Verificar que no exista ya un like con esta combinación
+                if (!Like::where([
+                    'likeable_type' => Post::class,
+                    'likeable_id' => $post->id,
+                    'ip_address' => $ip,
+                    'session_id' => $sessionId,
+                ])->exists()) {
+                    Like::create([
+                        'likeable_type' => Post::class,
+                        'likeable_id' => $post->id,
                         'ip_address' => $ip,
+                        'user_agent' => $userAgent,
+                        'session_id' => $sessionId,
                         'created_at' => now()->subDays(rand(1, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59)),
                     ]);
                     $totalLikesCreated++;
                 }
             }
-
-            // Actualizar el contador de likes del post
-            $actualLikes = DB::table('likes')->where('post_id', $post->id)->count();
-            $post->update(['likes_count' => $actualLikes]);
         }
 
-        $this->command->info("✅ Se crearon {$totalLikesCreated} likes para posts.");
-        $this->command->info("📊 Likes por post:");
-        foreach ($posts as $post) {
-            $likesCount = DB::table('likes')->where('post_id', $post->id)->count();
-            $this->command->info("   • {$post->title}: {$likesCount} likes");
+        // Crear likes para comentarios
+        foreach ($comments as $comment) {
+            $numberOfLikes = rand(0, 5); // Entre 0 y 5 likes por comentario
+
+            for ($i = 0; $i < $numberOfLikes; $i++) {
+                $ip = $faker->ipv4;
+                $userAgent = $faker->userAgent;
+                $sessionId = $faker->uuid;
+
+                // Verificar que no exista ya un like con esta combinación
+                if (!Like::where([
+                    'likeable_type' => Comment::class,
+                    'likeable_id' => $comment->id,
+                    'ip_address' => $ip,
+                    'session_id' => $sessionId,
+                ])->exists()) {
+                    Like::create([
+                        'likeable_type' => Comment::class,
+                        'likeable_id' => $comment->id,
+                        'ip_address' => $ip,
+                        'user_agent' => $userAgent,
+                        'session_id' => $sessionId,
+                        'created_at' => now()->subDays(rand(1, 30))->subHours(rand(0, 23))->subMinutes(rand(0, 59)),
+                    ]);
+                    $totalLikesCreated++;
+                }
+            }
         }
+
+        $this->command->info("✅ Se crearon {$totalLikesCreated} likes en total.");
+        $this->command->info("📊 Desglose de likes:");
+
+        $postLikes = Like::where('likeable_type', Post::class)->count();
+        $commentLikes = Like::where('likeable_type', Comment::class)->count();
+
+        $this->command->info("   • Posts: {$postLikes} likes");
+        $this->command->info("   • Comentarios: {$commentLikes} likes");
     }
 }
