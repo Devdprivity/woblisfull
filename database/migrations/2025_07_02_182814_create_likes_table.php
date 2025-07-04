@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -23,23 +24,18 @@ return new class extends Migration
         }
 
         // Verificar y crear índices si no existen
-        Schema::table('likes', function (Blueprint $table) {
-            // Eliminar índices si existen
-            try {
-                $table->dropIndex('likes_likeable_type_likeable_id_index');
-            } catch (\Exception $e) {
-                // El índice no existía, continuamos
+        $schemaManager = DB::connection()->getDoctrineSchemaManager();
+        $indexes = $schemaManager->listTableIndexes('likes');
+
+        Schema::table('likes', function (Blueprint $table) use ($indexes) {
+            // Crear índices solo si no existen
+            if (!isset($indexes['likes_likeable_type_likeable_id_index'])) {
+                $table->index(['likeable_type', 'likeable_id']);
             }
 
-            try {
-                $table->dropIndex('unique_like');
-            } catch (\Exception $e) {
-                // El índice no existía, continuamos
+            if (!isset($indexes['unique_like'])) {
+                $table->unique(['likeable_type', 'likeable_id', 'ip_address', 'session_id'], 'unique_like');
             }
-
-            // Crear nuevos índices
-            $table->index(['likeable_type', 'likeable_id']);
-            $table->unique(['likeable_type', 'likeable_id', 'ip_address', 'session_id'], 'unique_like');
         });
     }
 
