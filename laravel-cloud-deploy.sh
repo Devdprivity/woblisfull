@@ -37,9 +37,14 @@ php artisan config:clear --quiet || true
 php artisan route:clear --quiet || true
 php artisan view:clear --quiet || true
 
-# Update database with custom command
-echo "🗃️ Updating production database..."
-php artisan db:update-production
+# Force migrations and seeders
+echo "🗃️ Force running migrations..."
+php artisan migrate --force
+
+echo "🌱 Force running seeders..."
+php artisan db:seed --force --class=CompanySeeder
+php artisan db:seed --force --class=CampaignSeeder
+php artisan db:seed --force --class=QuestionSeeder
 
 # Cache configuration and routes
 echo "⚡ Caching configuration..."
