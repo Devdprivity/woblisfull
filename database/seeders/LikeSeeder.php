@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Like;
+use Illuminate\Support\Str;
 
 class LikeSeeder extends Seeder
 {
@@ -16,7 +17,6 @@ class LikeSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = \Faker\Factory::create('es_ES');
         $posts = Post::all();
         $comments = Comment::all();
 
@@ -32,14 +32,30 @@ class LikeSeeder extends Seeder
 
         $totalLikesCreated = 0;
 
+        // IPs de ejemplo
+        $ips = [
+            '192.168.1.1', '10.0.0.1', '172.16.0.1', '203.0.113.1', '198.51.100.1',
+            '192.0.2.1', '203.0.113.50', '198.51.100.50', '192.168.1.50', '10.0.0.50',
+            '172.16.0.50', '203.0.113.100', '198.51.100.100', '192.168.1.100', '10.0.0.100',
+        ];
+
+        // User agents de ejemplo
+        $userAgents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15',
+        ];
+
         // Crear likes para posts
         foreach ($posts as $post) {
             $numberOfLikes = rand(10, 30); // Entre 10 y 30 likes por post
 
             for ($i = 0; $i < $numberOfLikes; $i++) {
-                $ip = $faker->ipv4;
-                $userAgent = $faker->userAgent;
-                $sessionId = $faker->uuid;
+                $ip = $ips[array_rand($ips)];
+                $userAgent = $userAgents[array_rand($userAgents)];
+                $sessionId = Str::uuid();
 
                 // Verificar que no exista ya un like con esta combinación
                 if (!Like::where([
@@ -66,9 +82,9 @@ class LikeSeeder extends Seeder
             $numberOfLikes = rand(0, 5); // Entre 0 y 5 likes por comentario
 
             for ($i = 0; $i < $numberOfLikes; $i++) {
-                $ip = $faker->ipv4;
-                $userAgent = $faker->userAgent;
-                $sessionId = $faker->uuid;
+                $ip = $ips[array_rand($ips)];
+                $userAgent = $userAgents[array_rand($userAgents)];
+                $sessionId = Str::uuid();
 
                 // Verificar que no exista ya un like con esta combinación
                 if (!Like::where([
