@@ -17,9 +17,9 @@ export default function AppLayoutTemplate({
         <AppShell variant="sidebar">
             <div className="flex min-h-screen bg-black">
                 <AppSidebar />
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                     <AppHeader />
-                    <main className="pl-0 lg:pl-72">
+                    <main className="w-full lg:ml-72">
                         {children}
                     </main>
                     <MobileNav />
