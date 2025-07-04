@@ -135,16 +135,19 @@ class CampaignSeeder extends Seeder
             }
 
             Campaign::create([
-                'name' => $campaignData['name'],
+                'title' => $campaignData['name'],
                 'description' => $campaignData['description'],
                 'type' => $campaignData['type'],
                 'user_id' => $company->id,
                 'status' => $campaignData['status'],
                 'slug' => $slug,
-                'target_responses' => $campaignData['target_responses'],
+                'max_responses' => $campaignData['target_responses'],
                 'start_date' => $campaignData['start_date'],
                 'end_date' => $campaignData['end_date'],
                 'settings' => $campaignData['settings'],
+                'client_name' => $company->company_name,
+                'client_email' => $company->email,
+                'client_phone' => $company->phone ?? null,
             ]);
         }
 

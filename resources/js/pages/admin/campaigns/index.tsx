@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, Edit, Trash2, Plus, Search, QrCode, ClipboardList, Users, Activity, CheckCircle } from "lucide-react";
+import QRModal from "@/components/qr-modal";
 
 interface Campaign {
     id: number;
@@ -222,13 +223,14 @@ export default function CampaignsIndex({ campaigns, stats, filters }: Props) {
                                                     <Edit className="w-4 h-4" />
                                                 </Button>
                                             </Link>
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => window.open(`/encuesta/${campaign.slug}`, '_blank')}
-                                            >
-                                                <QrCode className="w-4 h-4" />
-                                            </Button>
+                                                                        <QRModal campaignSlug={campaign.slug} campaignTitle={campaign.title}>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                >
+                                    <QrCode className="w-4 h-4" />
+                                </Button>
+                            </QRModal>
                                             <Button
                                                 variant="outline"
                                                 size="sm"
