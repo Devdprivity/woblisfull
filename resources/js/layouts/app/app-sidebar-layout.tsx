@@ -15,12 +15,14 @@ export default function AppLayoutTemplate({
 }: AppLayoutTemplateProps) {
     return (
         <AppShell variant="sidebar">
-            <div className="flex min-h-screen bg-black">
+            <div className="flex min-h-screen overflow-hidden">
                 <AppSidebar />
-                <div className="flex-1 w-full">
+                <div className="flex-1 flex flex-col min-w-0">
                     <AppHeader />
-                    <main className="w-full lg:ml-72">
-                        {children}
+                    <main className="flex-1 w-full lg:ml-72 overflow-x-hidden">
+                        <div className="container mx-auto px-4 py-8">
+                            {children}
+                        </div>
                     </main>
                     <MobileNav />
                 </div>
