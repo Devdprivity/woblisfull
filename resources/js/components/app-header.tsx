@@ -7,7 +7,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     return (
-        <div className="sticky top-0 z-40 lg:pl-72">
+        <div className="sticky top-0 z-40">
             <AppSidebarHeader breadcrumbs={breadcrumbs} />
         </div>
     );

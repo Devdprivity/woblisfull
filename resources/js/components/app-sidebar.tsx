@@ -16,19 +16,16 @@ const footerNavItems: NavItem[] = [
         title: 'Gestión de Usuarios',
         href: '/admin/users',
         icon: Users,
-        target: '_self'
     },
     {
         title: 'Roles y Permisos',
         href: '/admin/roles',
         icon: UserCog,
-        target: '_self'
     },
     {
         title: 'Gestión de Planes',
         href: '/admin/plans',
         icon: CreditCard,
-        target: '_self'
     }
 ];
 
@@ -93,19 +90,17 @@ export function AppSidebar() {
     };
 
     return (
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-            <Sidebar>
-                <SidebarHeader>
-                    <AppLogo />
-                </SidebarHeader>
-                <SidebarContent>
-                    <NavUser />
-                    <NavMain items={getMainNavItems()} />
-                </SidebarContent>
-                <SidebarFooter>
-                    <NavFooter items={footerNavItems} />
-                </SidebarFooter>
-            </Sidebar>
-        </div>
+        <Sidebar collapsible="icon">
+            <SidebarHeader>
+                <AppLogo />
+            </SidebarHeader>
+            <SidebarContent>
+                <NavUser />
+                <NavMain items={getMainNavItems()} />
+            </SidebarContent>
+            <SidebarFooter>
+                <NavFooter items={footerNavItems} />
+            </SidebarFooter>
+        </Sidebar>
     );
 }
