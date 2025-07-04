@@ -23,17 +23,27 @@ return new class extends Migration
             });
         }
 
-        // Verificar y crear índices si no existen
-        $schemaManager = DB::connection()->getDoctrineSchemaManager();
-        $indexes = $schemaManager->listTableIndexes('likes');
+        // Verificar si los índices existen
+        $indexExists = DB::select("
+            SELECT 1
+            FROM pg_indexes
+            WHERE tablename = 'likes'
+            AND indexname = 'likes_likeable_type_likeable_id_index'
+        ");
 
-        Schema::table('likes', function (Blueprint $table) use ($indexes) {
-            // Crear índices solo si no existen
-            if (!isset($indexes['likes_likeable_type_likeable_id_index'])) {
+        $uniqueIndexExists = DB::select("
+            SELECT 1
+            FROM pg_indexes
+            WHERE tablename = 'likes'
+            AND indexname = 'unique_like'
+        ");
+
+        Schema::table('likes', function (Blueprint $table) use ($indexExists, $uniqueIndexExists) {
+            if (empty($indexExists)) {
                 $table->index(['likeable_type', 'likeable_id']);
             }
 
-            if (!isset($indexes['unique_like'])) {
+            if (empty($uniqueIndexExists)) {
                 $table->unique(['likeable_type', 'likeable_id', 'ip_address', 'session_id'], 'unique_like');
             }
         });
