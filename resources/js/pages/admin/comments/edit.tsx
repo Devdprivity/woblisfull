@@ -279,8 +279,8 @@ export default function CommentsEdit({ comment }: Props) {
                                 <div>
                                     <span className="font-medium">Caracteres:</span> {formData.content.length}
                                 </div>
-                                <div>
-                                    <span className="font-medium">Palabras:</span> {formData.content.trim().split(/\s+/).length}
+                                <div className="flex items-center justify-between">
+                                    <span className="font-medium">Palabras:</span> {formData.content && formData.content.trim() ? formData.content.trim().split(/\s+/).length : 0}
                                 </div>
                             </CardContent>
                         </Card>

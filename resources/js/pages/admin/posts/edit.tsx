@@ -62,7 +62,7 @@ export default function PostsEdit({ post }: Props) {
     };
 
     const addTag = () => {
-        if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+        if (newTag && newTag.trim() && !formData.tags.includes(newTag.trim())) {
             setFormData(prev => ({
                 ...prev,
                 tags: [...prev.tags, newTag.trim()]

@@ -41,8 +41,8 @@ export default function PostsCreate() {
         }));
 
         // Auto-generate slug from title
-        if (field === 'title' && !formData.slug) {
-            const slug = value
+        if (field === 'title') {
+            const slug = (value || '')
                 .toLowerCase()
                 .replace(/[^a-z0-9\s-]/g, '')
                 .replace(/\s+/g, '-')
@@ -56,7 +56,7 @@ export default function PostsCreate() {
     };
 
     const addTag = () => {
-        if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+        if (newTag && newTag.trim() && !formData.tags.includes(newTag.trim())) {
             setFormData(prev => ({
                 ...prev,
                 tags: [...prev.tags, newTag.trim()]

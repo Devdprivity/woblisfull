@@ -55,8 +55,7 @@ export default function CampaignsCreate() {
     ];
 
     const addQuestion = () => {
-        if (!currentQuestion.question.trim()) {
-            alert("La pregunta es obligatoria");
+        if (!currentQuestion.question || !currentQuestion.question.trim()) {
             return;
         }
 
@@ -114,7 +113,7 @@ export default function CampaignsCreate() {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (questions.length === 0) {
             alert("Debes agregar al menos una pregunta");
             return;
@@ -291,8 +290,8 @@ export default function CampaignsCreate() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <Label htmlFor="type">Tipo de Pregunta</Label>
-                                            <Select 
-                                                value={currentQuestion.type} 
+                                            <Select
+                                                value={currentQuestion.type}
                                                 onValueChange={(value) => setCurrentQuestion({
                                                     ...currentQuestion,
                                                     type: value,

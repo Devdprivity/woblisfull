@@ -291,7 +291,7 @@ export default function CommentsShow({ comment }: Props) {
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm">Palabras</span>
                                     <span className="font-semibold">
-                                        {comment.content.trim().split(/\s+/).length}
+                                        {comment.content.trim() ? comment.content.trim().split(/\s+/).length : 0}
                                     </span>
                                 </div>
                             </CardContent>

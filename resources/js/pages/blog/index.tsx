@@ -37,7 +37,7 @@ export default function BlogIndex({ posts, featuredPost }: Props) {
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        if (searchQuery.trim()) {
+        if (searchQuery && searchQuery.trim()) {
             router.get(route('blog.search'), { q: searchQuery });
         }
     };

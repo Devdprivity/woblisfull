@@ -46,24 +46,23 @@ export default function PlanEdit({ plan }: PlanEditProps) {
 
     const [newFeature, setNewFeature] = useState('');
 
-    const generateSlug = (name: string) => {
-        return name
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-')
-            .trim();
-    };
+    const handleInputChange = (field: string, value: string) => {
+        setData(field, value);
 
-    const handleNameChange = (name: string) => {
-        setData('name', name);
-        if (!data.slug || data.slug === generateSlug(plan.name)) {
-            setData('slug', generateSlug(name));
+        // Auto-generate slug from name
+        if (field === 'name') {
+            const slug = (value || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            setData('slug', slug);
         }
     };
 
     const addFeature = () => {
-        if (newFeature.trim() && !data.features.includes(newFeature.trim())) {
+        if (newFeature && newFeature.trim() && !data.features.includes(newFeature.trim())) {
             setData('features', [...data.features, newFeature.trim()]);
             setNewFeature('');
         }
@@ -145,7 +144,7 @@ export default function PlanEdit({ plan }: PlanEditProps) {
                                                 id="name"
                                                 type="text"
                                                 value={data.name}
-                                                onChange={(e) => handleNameChange(e.target.value)}
+                                                onChange={(e) => handleInputChange('name', e.target.value)}
                                                 placeholder="Ej: Plan Pro"
                                                 required
                                             />
