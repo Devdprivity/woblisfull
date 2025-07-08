@@ -94,9 +94,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard-new', [DashboardController::class, 'newDashboard'])->name('dashboard.new');
 
-    // Rutas de encuestas
-    Route::get('/survey/{campaign}', [SurveyController::class, 'show'])->name('survey.show');
-
     // Rutas de interacción
     Route::post('/posts/{post}/like', [LikeController::class, 'store'])->name('posts.like');
     Route::delete('/posts/{post}/like', [LikeController::class, 'destroy'])->name('posts.unlike');
