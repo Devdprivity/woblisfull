@@ -82,7 +82,7 @@ class SecurityMiddleware
                 "default-src" => ["'self'"],
                 "script-src" => ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
                 "style-src" => ["'self'", "'unsafe-inline'", "https://fonts.bunny.net"],
-                "img-src" => ["'self'", "data:", "https:"],
+                "img-src" => ["'self'", "data:", "https:", "blob:"],
                 "font-src" => ["'self'", "data:", "https://fonts.bunny.net"],
                 "connect-src" => ["'self'"]
             ];
