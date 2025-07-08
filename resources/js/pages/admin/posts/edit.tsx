@@ -13,6 +13,7 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import ImageUpload from '@/components/ui/image-upload';
 import { ArrowLeft, Save, Eye, Plus, X } from 'lucide-react';
 
 interface Post {
@@ -41,7 +42,8 @@ export default function PostsEdit({ post }: Props) {
         slug: post.slug,
         excerpt: post.excerpt,
         content: post.content,
-        featured_image: post.featured_image || '',
+        featured_image: null as File | null,
+        featured_image_url: post.featured_image ? `/storage/${post.featured_image}` : '',
         status: post.status,
         author_name: post.author_name,
         author_email: post.author_email || '',
@@ -76,11 +78,37 @@ export default function PostsEdit({ post }: Props) {
         }));
     };
 
+    const handleImageChange = (file: File | null, url: string) => {
+        setFormData(prev => ({
+            ...prev,
+            featured_image: file,
+            featured_image_url: url
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        router.put(`/admin/posts/${post.id}`, formData, {
+        const submitData = new FormData();
+
+        // Add all form fields
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key === 'featured_image_url') return; // Skip preview URL
+
+            if (key === 'tags') {
+                submitData.append(key, JSON.stringify(value));
+            } else if (key === 'featured_image' && value instanceof File) {
+                submitData.append(key, value);
+            } else if (value !== null && value !== undefined) {
+                submitData.append(key, value.toString());
+            }
+        });
+
+        // Add _method for Laravel PUT request
+        submitData.append('_method', 'PUT');
+
+        router.post(`/admin/posts/${post.id}`, submitData, {
             onFinish: () => setIsSubmitting(false),
         });
     };
@@ -91,7 +119,7 @@ export default function PostsEdit({ post }: Props) {
             formData.slug !== post.slug ||
             formData.excerpt !== post.excerpt ||
             formData.content !== post.content ||
-            formData.featured_image !== (post.featured_image || '') ||
+            formData.featured_image !== null || // New image selected
             formData.status !== post.status ||
             formData.author_name !== post.author_name ||
             formData.author_email !== (post.author_email || '') ||
@@ -183,12 +211,11 @@ export default function PostsEdit({ post }: Props) {
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="featured_image">Imagen Destacada</Label>
-                                    <Input
-                                        id="featured_image"
-                                        value={formData.featured_image}
-                                        onChange={(e) => handleInputChange('featured_image', e.target.value)}
-                                        placeholder="URL de la imagen destacada"
+                                    <ImageUpload
+                                        label="Imagen Destacada"
+                                        value={formData.featured_image_url}
+                                        onChange={handleImageChange}
+                                        placeholder="Arrastra una imagen aquí o haz clic para seleccionar"
                                     />
                                 </div>
                             </CardContent>
@@ -319,6 +346,16 @@ export default function PostsEdit({ post }: Props) {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3 text-sm">
+                                    {formData.featured_image_url && (
+                                        <div>
+                                            <img
+                                                src={formData.featured_image_url}
+                                                alt="Preview"
+                                                className="w-full h-24 object-cover rounded-md"
+                                            />
+                                        </div>
+                                    )}
+
                                     <div>
                                         <h3 className="font-semibold">
                                             {formData.title || 'Título del post'}

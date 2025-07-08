@@ -66,6 +66,12 @@ return new class extends Migration
             if (!Schema::hasColumn('users', 'language')) {
                 $table->string('language')->default('es')->after('timezone');
             }
+
+            // 2FA fields
+            $table->string('google2fa_secret')->nullable();
+            $table->boolean('google2fa_enabled')->default(false);
+            $table->timestamp('google2fa_enabled_at')->nullable();
+            $table->text('recovery_codes')->nullable();
         });
     }
 
@@ -80,7 +86,11 @@ return new class extends Migration
                 'company_name', 'company_rut', 'company_address',
                 'company_phone', 'company_industry', 'company_size',
                 'account_type', 'status', 'role_id', 'phone',
-                'timezone', 'language'
+                'timezone', 'language',
+                'google2fa_secret',
+                'google2fa_enabled',
+                'google2fa_enabled_at',
+                'recovery_codes'
             ]);
         });
     }

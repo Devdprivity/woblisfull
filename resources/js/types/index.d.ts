@@ -22,6 +22,7 @@ export interface NavItem {
     isActive?: boolean;
     type?: 'header' | 'item';
     target?: '_self' | '_blank' | '_parent' | '_top';
+    label: string;
 }
 
 export interface Role {

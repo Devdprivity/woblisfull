@@ -11,16 +11,29 @@ const sidebarNavItems: NavItem[] = [
         title: 'Profile',
         href: '/settings/profile',
         icon: null,
+        label: 'Profile',
+        type: 'item',
     },
     {
         title: 'Password',
         href: '/settings/password',
         icon: null,
+        label: 'Password',
+        type: 'item',
+    },
+    {
+        title: 'Two-Factor Authentication',
+        href: '/settings/two-factor',
+        icon: null,
+        label: 'Two-Factor Authentication',
+        type: 'item',
     },
     {
         title: 'Appearance',
         href: '/settings/appearance',
         icon: null,
+        label: 'Appearance',
+        type: 'item',
     },
 ];
 
@@ -49,7 +62,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                     'bg-muted': currentPath === item.href,
                                 })}
                             >
-                                <Link href={item.href} prefetch>
+                                <Link href={item.href || '#'} prefetch>
                                     {item.title}
                                 </Link>
                             </Button>

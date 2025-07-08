@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Exception;
 
 class DashboardController extends Controller
 {
@@ -151,12 +152,70 @@ class DashboardController extends Controller
             'month' => 'YYYY-MM',
         };
 
-        // Gráfico de líneas - Tendencias de usuarios registrados
-        $userTrends = User::selectRaw("TO_CHAR(created_at, '$groupFormat') as period, COUNT(*) as count")
+        // Gráfico de líneas - Tendencias de usuarios registrados (mejorado)
+        // Primero obtenemos los datos básicos de usuarios
+        $basicUserTrends = User::selectRaw("
+            TO_CHAR(created_at, '$groupFormat') as period,
+            COUNT(*) as total_users,
+            COUNT(CASE WHEN account_type = 'client' THEN 1 END) as client_users,
+            COUNT(CASE WHEN account_type = 'company' THEN 1 END) as company_users,
+            COUNT(CASE WHEN status = 'active' THEN 1 END) as active_users,
+            COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending_users,
+            COUNT(CASE WHEN status = 'suspended' THEN 1 END) as suspended_users
+        ")
             ->whereBetween('created_at', [$startDate, $endDate])
             ->groupBy('period')
             ->orderBy('period')
             ->get();
+
+        // Ahora agregamos datos de administradores y campañas
+        $userTrends = $basicUserTrends->map(function ($item) use ($filterType, $startDate, $endDate) {
+            // Determinar el rango de fechas basado en el período
+            try {
+                switch ($filterType) {
+                    case 'day':
+                        $periodStart = Carbon::createFromFormat('Y-m-d', $item->period)->startOfDay();
+                        $periodEnd = Carbon::createFromFormat('Y-m-d', $item->period)->endOfDay();
+                        break;
+                    case 'week':
+                        // Para semanas, usar el rango completo por ahora
+                        $periodStart = $startDate;
+                        $periodEnd = $endDate;
+                        break;
+                    case 'month':
+                    default:
+                        $periodStart = Carbon::createFromFormat('Y-m', $item->period)->startOfMonth();
+                        $periodEnd = Carbon::createFromFormat('Y-m', $item->period)->endOfMonth();
+                        break;
+                }
+            } catch (Exception $e) {
+                // Si hay error en el parsing, usar el rango completo
+                $periodStart = $startDate;
+                $periodEnd = $endDate;
+            }
+
+            $adminCount = User::whereHas('role', function($q) {
+                $q->where('name', 'admin');
+            })->whereBetween('created_at', [$periodStart, $periodEnd])->count();
+
+            // Contar usuarios con campañas para este período
+            $usersWithCampaigns = User::whereHas('campaigns')
+                ->whereBetween('created_at', [$periodStart, $periodEnd])
+                ->count();
+
+            return [
+                'period' => $item->period,
+                'total_users' => (int) $item->total_users,
+                'client_users' => (int) $item->client_users,
+                'company_users' => (int) $item->company_users,
+                'admin_users' => $adminCount,
+                'users_with_campaigns' => $usersWithCampaigns,
+                'users_without_campaigns' => (int) $item->total_users - $usersWithCampaigns,
+                'active_users' => (int) $item->active_users,
+                'pending_users' => (int) $item->pending_users,
+                'suspended_users' => (int) $item->suspended_users,
+            ];
+        });
 
         // Gráfico de barras - Campañas por mes
         $campaignsByPeriod = Campaign::selectRaw("TO_CHAR(created_at, '$groupFormat') as period, COUNT(*) as count")
@@ -207,6 +266,46 @@ class DashboardController extends Controller
             ];
         })->sortBy('period')->values();
 
+        // Distribución por rol con porcentajes y colores
+        $totalUsers = User::count();
+        $roleDistribution = [
+            [
+                'role' => 'Clientes',
+                'count' => User::where('account_type', 'client')->count(),
+                'percentage' => $totalUsers > 0 ? round((User::where('account_type', 'client')->count() / $totalUsers) * 100, 1) : 0,
+                'color' => '#45B7D1'
+            ],
+            [
+                'role' => 'Empresas',
+                'count' => User::where('account_type', 'company')->count(),
+                'percentage' => $totalUsers > 0 ? round((User::where('account_type', 'company')->count() / $totalUsers) * 100, 1) : 0,
+                'color' => '#4ECDC4'
+            ],
+            [
+                'role' => 'Administradores',
+                'count' => User::whereHas('role', function($q) { $q->where('name', 'admin'); })->count(),
+                'percentage' => $totalUsers > 0 ? round((User::whereHas('role', function($q) { $q->where('name', 'admin'); })->count() / $totalUsers) * 100, 1) : 0,
+                'color' => '#FF6B6B'
+            ]
+        ];
+
+        // Asociación a campañas
+        $usersWithCampaigns = User::whereHas('campaigns')->count();
+        $usersWithoutCampaigns = $totalUsers - $usersWithCampaigns;
+
+        $campaignAssociation = [
+            [
+                'category' => 'Con Campañas',
+                'count' => $usersWithCampaigns,
+                'percentage' => $totalUsers > 0 ? round(($usersWithCampaigns / $totalUsers) * 100, 1) : 0
+            ],
+            [
+                'category' => 'Sin Campañas',
+                'count' => $usersWithoutCampaigns,
+                'percentage' => $totalUsers > 0 ? round(($usersWithoutCampaigns / $totalUsers) * 100, 1) : 0
+            ]
+        ];
+
         return [
             'userTrends' => $userTrends->toArray(),
             'campaignsByPeriod' => $campaignsByPeriod->toArray(),
@@ -219,6 +318,8 @@ class DashboardController extends Controller
             })->toArray(),
             'campaignsByStatus' => $campaignsByStatus->toArray(),
             'contentTrends' => $contentTrends->toArray(),
+            'roleDistribution' => $roleDistribution,
+            'campaignAssociation' => $campaignAssociation,
         ];
     }
 

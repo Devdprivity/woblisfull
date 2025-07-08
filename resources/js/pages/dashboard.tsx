@@ -9,6 +9,7 @@ import CustomBarChart from '@/components/charts/BarChart';
 import CustomLineChart from '@/components/charts/LineChart';
 import CustomPieChart from '@/components/charts/PieChart';
 import DashboardFilters from '@/components/charts/DashboardFilters';
+import EnhancedUserTrendsChart from '@/components/charts/EnhancedUserTrendsChart';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -53,12 +54,25 @@ interface Stats {
 }
 
 interface ChartsData {
-    userTrends: Array<{ period: string; count: number }>;
+    userTrends: Array<{
+        period: string;
+        total_users: number;
+        client_users: number;
+        company_users: number;
+        admin_users: number;
+        users_with_campaigns: number;
+        users_without_campaigns: number;
+        active_users: number;
+        pending_users: number;
+        suspended_users: number;
+    }>;
     campaignsByPeriod: Array<{ period: string; count: number }>;
     responsesByPeriod: Array<{ period: string; count: number }>;
     usersByRole: Array<{ account_type: string; count: number }>;
     campaignsByStatus: Array<{ status: string; count: number }>;
     contentTrends: Array<{ period: string; posts: number; comments: number }>;
+    roleDistribution: Array<{ role: string; count: number; percentage: number; color: string }>;
+    campaignAssociation: Array<{ category: string; count: number; percentage: number }>;
 }
 
 interface Filters {
@@ -383,17 +397,16 @@ export default function Dashboard({ user, stats, recentCampaigns, recentPosts, c
                                 Análisis y Tendencias
                             </h3>
 
-                            {/* Gráficos de líneas - Tendencias */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <CustomLineChart
-                                    data={chartsData.userTrends}
-                                    title="Tendencia de Usuarios Registrados"
-                                    xAxisKey="period"
-                                    lineKeys={['count']}
-                                    colors={['#7FFF00']}
-                                    height={350}
-                                />
+                            {/* Gráfico Mejorado de Tendencias de Usuarios */}
+                            <EnhancedUserTrendsChart
+                                data={chartsData.userTrends}
+                                roleDistribution={chartsData.roleDistribution}
+                                campaignAssociation={chartsData.campaignAssociation}
+                                height={400}
+                            />
 
+                            {/* Gráfico de Contenido */}
+                            <div className="grid grid-cols-1 gap-6">
                                 <CustomLineChart
                                     data={chartsData.contentTrends}
                                     title="Tendencia de Contenido (Posts y Comentarios)"

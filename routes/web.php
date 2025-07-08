@@ -6,9 +6,11 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Rutas públicas
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('welcome');
@@ -37,7 +39,7 @@ Route::prefix('woblog')->name('blog.')->group(function () {
     Route::post('/{post}/like', [PostController::class, 'toggleLike'])->name('like');
 
     // Admin routes (for future dashboard)
-    Route::middleware(['auth', 'role:admin,company_active'])->group(function () {
+    Route::middleware(['auth', '2fa', 'role:admin,company_active'])->group(function () {
         Route::get('/admin/crear', [PostController::class, 'create'])->name('create');
         Route::post('/admin', [PostController::class, 'store'])->name('store');
         Route::get('/admin/{post:slug}/editar', [PostController::class, 'edit'])->name('edit');
@@ -53,7 +55,7 @@ Route::prefix('api/comments')->name('comments.')->group(function () {
     Route::post('/{comment}/like', [CommentController::class, 'toggleLike'])->name('like');
 
     // Admin routes
-    Route::middleware(['auth', 'role:admin,company_active'])->group(function () {
+    Route::middleware(['auth', '2fa', 'role:admin,company_active'])->group(function () {
         Route::get('/', [CommentController::class, 'index'])->name('index');
         Route::get('/{comment}', [CommentController::class, 'show'])->name('show');
         Route::put('/{comment}', [CommentController::class, 'update'])->name('update');
@@ -67,7 +69,7 @@ Route::prefix('api/likes')->name('likes.')->group(function () {
     Route::get('/stats', [LikeController::class, 'stats'])->name('stats');
 
     // Admin routes
-    Route::middleware(['auth', 'role:admin,company_active'])->group(function () {
+    Route::middleware(['auth', '2fa', 'role:admin,company_active'])->group(function () {
         Route::get('/', [LikeController::class, 'index'])->name('index');
         Route::delete('/{like}', [LikeController::class, 'destroy'])->name('destroy');
     });
@@ -87,15 +89,19 @@ Route::prefix('encuesta')->name('survey.')->group(function () {
     Route::get('/qr/{campaign:slug}', [SurveyController::class, 'qr'])->name('qr');
 });
 
-// Dashboard route with metrics
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('dashboard');
+// Rutas que requieren autenticación
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard-new', [DashboardController::class, 'newDashboard'])->name('dashboard.new');
 
-// Dashboard export route
-Route::get('/dashboard/export', [DashboardController::class, 'export'])
-    ->middleware(['auth'])
-    ->name('dashboard.export');
+    // Rutas de encuestas
+    Route::get('/survey/{campaign}', [SurveyController::class, 'show'])->name('survey.show');
+
+    // Rutas de interacción
+    Route::post('/posts/{post}/like', [LikeController::class, 'store'])->name('posts.like');
+    Route::delete('/posts/{post}/like', [LikeController::class, 'destroy'])->name('posts.unlike');
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('posts.comments.store');
+});
 
 require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';

@@ -13,14 +13,14 @@ export default function Welcome() {
         <PublicLayout>
             <Head title="Woblis - Encuestas para conductores" />
             <main>
-                <WoblisHero />
-                <WoblisAbout />
-                <WoblisFeatures />
+                        <WoblisHero />
+                        <WoblisAbout />
+                        <WoblisFeatures />
                 <WoblisHowItWorks />
-                <WoblisTestimonials />
-                <WoblisPricing />
-                <WoblisContact />
-            </main>
+                        <WoblisTestimonials />
+                        <WoblisPricing />
+                        <WoblisContact />
+                </main>
         </PublicLayout>
     );
 }

@@ -1,0 +1,1 @@
+import{j as s}from"./app-BqHKWdNa.js";import{W as e,a as o}from"./woblis-footer-BZVL7A1n.js";function t({children:a}){return s.jsxs("div",{className:"min-h-screen bg-black",children:[s.jsx(e,{}),s.jsx("main",{className:"relative",children:a}),s.jsx(o,{})]})}export{t as B};

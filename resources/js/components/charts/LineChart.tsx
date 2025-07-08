@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { useChartTheme } from '@/hooks/use-chart-theme'
 
 interface LineChartProps {
   data: Record<string, string | number>[]
@@ -17,27 +18,37 @@ export default function CustomLineChart({
   colors,
   height = 300
 }: LineChartProps) {
+  const theme = useChartTheme()
+
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{title}</h3>
+    <div
+      style={{
+        backgroundColor: theme.background,
+        border: `1px solid ${theme.border}`,
+        borderRadius: '8px',
+        padding: '24px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <h3 style={{ fontSize: '18px', fontWeight: 600, color: theme.text, marginBottom: '16px' }}>{title}</h3>
       <ResponsiveContainer width="100%" height={height}>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.grid} />
           <XAxis
             dataKey={xAxisKey}
             tick={{ fontSize: 12 }}
-            className="text-gray-600 dark:text-gray-400"
+            stroke={theme.axis}
           />
           <YAxis
             tick={{ fontSize: 12 }}
-            className="text-gray-600 dark:text-gray-400"
+            stroke={theme.axis}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              border: 'none',
+              backgroundColor: theme.tooltip.background,
+              border: `1px solid ${theme.border}`,
               borderRadius: '8px',
-              color: 'white'
+              color: theme.tooltip.text
             }}
           />
           <Legend />
@@ -48,7 +59,8 @@ export default function CustomLineChart({
               dataKey={key}
               stroke={colors[index % colors.length]}
               strokeWidth={2}
-              dot={{ fill: colors[index % colors.length], strokeWidth: 2, r: 4 }}
+              dot={{ r: 4 }}
+              activeDot={{ r: 6 }}
             />
           ))}
         </LineChart>

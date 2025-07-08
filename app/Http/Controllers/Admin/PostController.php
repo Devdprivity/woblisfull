@@ -78,7 +78,7 @@ class PostController extends Controller
             'slug' => 'nullable|string|max:255|unique:posts,slug',
             'excerpt' => 'required|string|max:500',
             'content' => 'required|string',
-            'featured_image' => 'nullable|string',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
             'status' => 'required|in:published,draft,archived',
             'author_name' => 'required|string|max:255',
             'author_email' => 'nullable|email|max:255',
@@ -86,6 +86,11 @@ class PostController extends Controller
             'tags.*' => 'string|max:50',
             'published_at' => 'nullable|date',
         ]);
+
+        // Parse tags if they come as JSON string
+        if (isset($validated['tags']) && is_string($validated['tags'])) {
+            $validated['tags'] = json_decode($validated['tags'], true);
+        }
 
         // Auto-generate slug if not provided
         if (empty($validated['slug'])) {
@@ -95,6 +100,14 @@ class PostController extends Controller
         // Set published_at if status is published
         if ($validated['status'] === 'published' && !isset($validated['published_at'])) {
             $validated['published_at'] = now();
+        }
+
+        // Handle image upload
+        if ($request->hasFile('featured_image')) {
+            $image = $request->file('featured_image');
+            $imageName = time() . '_' . Str::slug($validated['title']) . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('posts', $imageName, 'public');
+            $validated['featured_image'] = $imagePath;
         }
 
         Post::create($validated);
@@ -135,7 +148,7 @@ class PostController extends Controller
             'slug' => 'nullable|string|max:255|unique:posts,slug,' . $post->id,
             'excerpt' => 'required|string|max:500',
             'content' => 'required|string',
-            'featured_image' => 'nullable|string',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
             'status' => 'required|in:published,draft,archived',
             'author_name' => 'required|string|max:255',
             'author_email' => 'nullable|email|max:255',
@@ -143,6 +156,11 @@ class PostController extends Controller
             'tags.*' => 'string|max:50',
             'published_at' => 'nullable|date',
         ]);
+
+        // Parse tags if they come as JSON string
+        if (isset($validated['tags']) && is_string($validated['tags'])) {
+            $validated['tags'] = json_decode($validated['tags'], true);
+        }
 
         // Update slug if title changed
         if ($validated['title'] !== $post->title && empty($validated['slug'])) {
@@ -152,6 +170,19 @@ class PostController extends Controller
         // Set published_at if status changed to published
         if ($validated['status'] === 'published' && $post->status !== 'published' && !isset($validated['published_at'])) {
             $validated['published_at'] = now();
+        }
+
+        // Handle image upload
+        if ($request->hasFile('featured_image')) {
+            // Delete old image if exists
+            if ($post->featured_image) {
+                \Storage::disk('public')->delete($post->featured_image);
+            }
+
+            $image = $request->file('featured_image');
+            $imageName = time() . '_' . Str::slug($validated['title']) . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('posts', $imageName, 'public');
+            $validated['featured_image'] = $imagePath;
         }
 
         $post->update($validated);

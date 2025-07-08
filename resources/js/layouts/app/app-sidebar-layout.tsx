@@ -3,8 +3,7 @@ import { type ReactNode } from 'react';
 import { AppHeader } from '@/components/app-header';
 import { AppSidebar } from '@/components/app-sidebar';
 import MobileNav from '@/components/mobile-nav';
-import { AppShell } from '@/components/app-shell';
-import { SidebarInset } from '@/components/ui/sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 interface AppLayoutTemplateProps {
     children: ReactNode;
@@ -16,7 +15,7 @@ export default function AppLayoutTemplate({
     breadcrumbs,
 }: AppLayoutTemplateProps) {
     return (
-        <AppShell variant="sidebar">
+        <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
                 <AppHeader breadcrumbs={breadcrumbs} />
@@ -25,6 +24,6 @@ export default function AppLayoutTemplate({
                 </div>
                 <MobileNav />
             </SidebarInset>
-        </AppShell>
+        </SidebarProvider>
     );
 }

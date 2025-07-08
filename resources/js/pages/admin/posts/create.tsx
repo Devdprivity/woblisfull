@@ -13,6 +13,7 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import ImageUpload from '@/components/ui/image-upload';
 import { ArrowLeft, Save, Eye, Plus, X } from 'lucide-react';
 
 export default function PostsCreate() {
@@ -21,7 +22,8 @@ export default function PostsCreate() {
         slug: '',
         excerpt: '',
         content: '',
-        featured_image: '',
+        featured_image: null as File | null,
+        featured_image_url: '',
         status: 'draft',
         author_name: 'Woblis Team',
         author_email: 'team@woblis.com',
@@ -70,11 +72,34 @@ export default function PostsCreate() {
         }));
     };
 
+    const handleImageChange = (file: File | null, url: string) => {
+        setFormData(prev => ({
+            ...prev,
+            featured_image: file,
+            featured_image_url: url
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        router.post('/admin/posts', formData, {
+        const submitData = new FormData();
+
+        // Add all form fields
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key === 'featured_image_url') return; // Skip preview URL
+
+            if (key === 'tags') {
+                submitData.append(key, JSON.stringify(value));
+            } else if (key === 'featured_image' && value instanceof File) {
+                submitData.append(key, value);
+            } else if (value !== null && value !== undefined) {
+                submitData.append(key, value.toString());
+            }
+        });
+
+        router.post('/admin/posts', submitData, {
             onFinish: () => setIsSubmitting(false),
         });
     };
@@ -162,12 +187,11 @@ export default function PostsCreate() {
                                 </div>
 
                                 <div>
-                                    <Label htmlFor="featured_image">Imagen Destacada</Label>
-                                    <Input
-                                        id="featured_image"
-                                        value={formData.featured_image}
-                                        onChange={(e) => handleInputChange('featured_image', e.target.value)}
-                                        placeholder="URL de la imagen destacada"
+                                    <ImageUpload
+                                        label="Imagen Destacada"
+                                        value={formData.featured_image_url}
+                                        onChange={handleImageChange}
+                                        placeholder="Arrastra una imagen aquí o haz clic para seleccionar"
                                     />
                                 </div>
                             </CardContent>
@@ -294,6 +318,16 @@ export default function PostsCreate() {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3 text-sm">
+                                    {formData.featured_image_url && (
+                                        <div>
+                                            <img
+                                                src={formData.featured_image_url}
+                                                alt="Preview"
+                                                className="w-full h-24 object-cover rounded-md"
+                                            />
+                                        </div>
+                                    )}
+
                                     <div>
                                         <h3 className="font-semibold">
                                             {formData.title || 'Título del post'}
