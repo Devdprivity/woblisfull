@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB; // Added this import for DB facade
 
 return new class extends Migration
 {
@@ -31,6 +32,14 @@ return new class extends Migration
             $table->timestamp('last_failed_login_at')->nullable()->after('failed_login_attempts');
             $table->text('recovery_codes')->nullable()->after('last_failed_login_at');
         });
+
+        // Inicializar todos los campos 2FA como deshabilitados
+        DB::table('users')->update([
+            'google2fa_enabled' => false,
+            'google2fa_secret' => null,
+            'google2fa_enabled_at' => null,
+            'recovery_codes' => null
+        ]);
     }
 
     /**
