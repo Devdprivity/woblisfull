@@ -1,4 +1,4 @@
-export default function WoblisFeatures() {
+export default function ZenitFeatures() {
     const features = [
         {
             title: "Captura Full Continua",

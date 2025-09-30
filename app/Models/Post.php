@@ -118,7 +118,7 @@ class Post extends Model
     {
         return $this->featured_image
             ? asset('storage/' . $this->featured_image)
-            : asset('img/woblis.jpg');
+            : asset('img/logoWoblis.png');
     }
 
     public function getExcerptAttribute($value)

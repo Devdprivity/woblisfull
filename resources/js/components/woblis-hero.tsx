@@ -1,6 +1,6 @@
 import WoblisVideo from './woblis-video';
 
-export default function WoblisHero() {
+export default function ZenitHero() {
     return (
         <section className="bg-black text-green-400 min-h-[calc(100vh-4rem)] flex items-center py-16 md:py-24">
             <div className="container mx-auto px-4 md:px-8">
@@ -18,7 +18,7 @@ export default function WoblisHero() {
                             <span className="text-[#7fff00]">261,000</span>{" "}
                             <span className="text-white">viajes al día.</span>
                             <br />
-                            <span className="text-white">Woblis los convierte</span>
+                            <span className="text-white">Zenit los convierte</span>
                             <br />
                             <span className="text-white">en</span>{" "}
                             <span className="text-[#7fff00]">Insights</span>

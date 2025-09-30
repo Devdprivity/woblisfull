@@ -52,14 +52,14 @@ export default function BlogIndex({ posts, featuredPost }: Props) {
 
     return (
         <BlogLayout>
-            <Head title="Woblog - Blog de Woblis" />
+            <Head title="ZenBlog - Blog de Zenit" />
 
             <div className="bg-black min-h-screen pt-20">
                 <div className="container mx-auto px-8 py-12">
                     {/* Header */}
                     <div className="text-center mb-12">
                         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-                            Wob<span className="text-[#7FFF00]">log</span>
+                            Zen<span className="text-[#7FFF00]">Blog</span>
                         </h1>
                         <p className="text-gray-300 text-lg max-w-2xl mx-auto">
                             Descubre insights, tendencias y novedades del mundo del transporte y la investigación de mercado

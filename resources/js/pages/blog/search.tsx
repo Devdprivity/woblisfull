@@ -42,7 +42,7 @@ export default function BlogSearch({ posts, query }: Props) {
 
     return (
         <BlogLayout>
-            <Head title={`Búsqueda: ${query} - Woblog`} />
+            <Head title={`Búsqueda: ${query} - ZenBlog`} />
 
             <div className="bg-black min-h-screen pt-20">
                 <div className="container mx-auto px-8 py-12">
@@ -52,7 +52,7 @@ export default function BlogSearch({ posts, query }: Props) {
                             <ol className="flex items-center space-x-2 text-sm text-gray-400">
                                 <li>
                                     <Link href={route('blog.index')} className="hover:text-[#7FFF00] transition-colors">
-                                        Woblog
+                                        ZenBlog
                                     </Link>
                                 </li>
                                 <li>/</li>

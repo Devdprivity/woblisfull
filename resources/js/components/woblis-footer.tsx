@@ -31,13 +31,13 @@ export default function WoblisFooter() {
                     <div className="grid md:grid-cols-4 gap-8">
                         {/* Company Info */}
                         <div>
-                            <h4 className="text-[#7fff00] text-xl font-bold mb-4">WOBLIS</h4>
+                            <h4 className="text-[#7fff00] text-xl font-bold mb-4">Zenit</h4>
                             <p className="text-sm text-gray-300 mb-4">
                                 Transformando datos de movilidad en insights accionables para
                                 crear ciudades más inteligentes y eficientes.
                             </p>
                             <div className="text-sm text-gray-400">
-                                <p>© 2025 Woblis. Todos los derechos reservados.</p>
+                                <p>© 2025 Zenit. Todos los derechos reservados.</p>
                             </div>
                         </div>
 

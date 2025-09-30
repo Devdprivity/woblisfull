@@ -160,7 +160,7 @@ export default function WoblisContact() {
                                     </div>
                                     <div className="flex-1">
                                         <h4 className="text-lg font-semibold text-white">Email</h4>
-                                        <p className="text-[#7fff00] font-medium">contacto@woblis.com</p>
+                                        <p className="text-[#7fff00] font-medium">contacto@Zenit.com</p>
                                         <p className="text-sm text-gray-400">Respuesta en 24 horas</p>
                                     </div>
                                 </div>

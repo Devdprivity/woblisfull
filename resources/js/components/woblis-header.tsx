@@ -16,8 +16,8 @@ export default function WoblisHeader() {
                     <div className="flex items-center space-x-4">
                         <Link href="/">
                             <img
-                                src="/img/woblis.jpg"
-                                alt="Woblis Logo"
+                                src="/img/logoWoblis.png"
+                                alt="Zenit Logo"
                                 className="h-20 w-auto object-contain"
                             />
                         </Link>
@@ -35,7 +35,7 @@ export default function WoblisHeader() {
                             AGENCIAS
                         </Link>
                         <Link href={route('drivers')} className="text-gray-300 hover:text-[#7FFF00] transition-colors">
-                            ¿QUIERES SER WOBLIS?
+                            ¿QUIERES SER ZENITH?
                         </Link>
                         <button
                             onClick={() => setIsContactModalOpen(true)}
@@ -44,7 +44,7 @@ export default function WoblisHeader() {
                             CONTACTO
                         </button>
                         <Link href={route('blog.index')} className="text-gray-300 hover:text-[#7FFF00] transition-colors">
-                            WOBLOG
+                            ZENBLOG
                         </Link>
                     </nav>
 

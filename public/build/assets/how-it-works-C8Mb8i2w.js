@@ -1,1 +1,0 @@
-import{j as o,L as t}from"./app-BqHKWdNa.js";import{W as r}from"./woblis-how-it-works-BLOPUUVW.js";import{P as s}from"./public-layout-DbYJog4w.js";import"./woblis-footer-BZVL7A1n.js";import"./mobile-nav-Dtaoy4Ad.js";function p(){return o.jsxs(s,{children:[o.jsx(t,{title:"¿Cómo funciona? - Woblis"}),o.jsx(r,{})]})}export{p as default};

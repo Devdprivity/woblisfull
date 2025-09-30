@@ -187,7 +187,7 @@ export default function CommentsEdit({ comment }: Props) {
                                     </div>
                                     <div className="mt-2">
                                         <a
-                                            href={`/woblog/${comment.post.slug}`}
+                                            href={route('blog.show', comment.post.slug)}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="text-sm text-blue-600 hover:underline"

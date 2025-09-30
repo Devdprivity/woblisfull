@@ -40,10 +40,10 @@ export default function WoblisAgencies() {
             <WoblisHeader />
 
             {/* Hero Section */}
-            <section className="pt-20 pb-16 bg-black text-white">
+            <section className="pt-20 pb-16 bg-black text-white" style={{ marginTop: '60px' }}>
                 <div className="container mx-auto px-8 text-center">
                     <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                        <span className="text-[#7FFF00]">Woblis</span> para Agencias: tu red de terreno en movimiento
+                        <span className="text-[#7FFF00]">Zenit</span> para Agencias: tu red de terreno en movimiento
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto">
@@ -98,7 +98,7 @@ export default function WoblisAgencies() {
                     </h2>
 
                     <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
-                        Conversemos y veamos cómo Woblis puede acelerar tu campo y fortalecer tu entrega.
+                        Conversemos y veamos cómo Zenit puede acelerar tu campo y fortalecer tu entrega.
                     </p>
 
                     <button className="bg-[#7FFF00] text-black px-8 py-4 rounded-lg text-lg font-bold hover:bg-[#6FEF00] transition-colors inline-flex items-center gap-3">
@@ -114,7 +114,7 @@ export default function WoblisAgencies() {
             <section className="py-12 bg-black border-t border-gray-800">
                 <div className="container mx-auto px-8 text-center">
                     <div className="max-w-md mx-auto">
-                        <h3 className="text-[#7FFF00] text-2xl font-bold mb-4">Woblis</h3>
+                        <h3 className="text-[#7FFF00] text-2xl font-bold mb-4">Zenit</h3>
 
                         <div className="mb-6">
                             <h4 className="text-[#7FFF00] font-bold mb-2">Horario</h4>
@@ -137,7 +137,7 @@ export default function WoblisAgencies() {
                 </div>
             </section>
 
-            <WoblisFooter />
+            {/* <WoblisFooter /> */}
         </div>
     );
 }

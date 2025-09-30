@@ -144,7 +144,7 @@ export default function LikesShow({ like }: Props) {
                                             <div className="space-y-2">
                                                 <div>
                                                     <a
-                                                        href={`/woblog/${like.likeable.slug}`}
+                                                        href={route('blog.show', like.likeable.slug)}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="text-blue-600 hover:underline text-sm"

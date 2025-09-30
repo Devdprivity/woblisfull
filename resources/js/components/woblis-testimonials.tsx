@@ -36,7 +36,7 @@ export default function WoblisTestimonials() {
 
                         <div className="border-l-4 border-green-400 pl-6 py-4">
                             <blockquote className="text-xl italic">
-                                "Woblis ha transformado la forma en que recopilamos feedback de nuestros usuarios.
+                                "Zenit ha transformado la forma en que recopilamos feedback de nuestros usuarios.
                                 La calidad y cantidad de respuestas que obtenemos ahora es excepcional."
                             </blockquote>
                             <cite className="text-[#7fff00] font-semibold mt-2 block">

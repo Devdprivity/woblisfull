@@ -110,7 +110,7 @@ export default function PostsShow({ post }: Props) {
                             </Button>
                         </Link>
                         {post.status === 'published' && (
-                            <a href={`/woblog/${post.slug}`} target="_blank" rel="noopener noreferrer">
+                            <a href={route('blog.show', post.slug)} target="_blank" rel="noopener noreferrer">
                                 <Button variant="outline">
                                     <Eye className="w-4 h-4 mr-2" />
                                     Ver en Blog

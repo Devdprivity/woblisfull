@@ -43,7 +43,7 @@ export default function WoblisPricing() {
 
     // Categorías y descripciones
     const categoryDescriptions = {
-        'pyme': "Para quienes lideran con esfuerzo diario, sin grandes presupuestos ni tiempo que perder, pero con la convicción de que mejorar comienza con escuchar. Woblis entrega datos reales, ágiles y accionables para tomar decisiones con fundamento.",
+        'pyme': "Para quienes lideran con esfuerzo diario, sin grandes presupuestos ni tiempo que perder, pero con la convicción de que mejorar comienza con escuchar. Zenit entrega datos reales, ágiles y accionables para tomar decisiones con fundamento.",
         'corp': "Para equipos que entienden que la intuición no reemplaza la evidencia. Toma decisiones respaldadas por datos recientes, recolectados en terreno y validados. Porque en escenarios cambiantes, la frescura del dato es ventaja competitiva."
     };
 

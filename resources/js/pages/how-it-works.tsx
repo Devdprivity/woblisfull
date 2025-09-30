@@ -5,7 +5,7 @@ import PublicLayout from '@/layouts/public-layout';
 export default function HowItWorks() {
     return (
         <PublicLayout>
-            <Head title="¿Cómo funciona? - Woblis" />
+            <Head title="¿Cómo funciona? - Zenit" />
             <WoblisHowItWorks />
         </PublicLayout>
     );

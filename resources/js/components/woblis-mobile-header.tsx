@@ -12,8 +12,8 @@ export default function WoblisMobileHeader() {
                     <div className="flex items-center">
                         <Link href="/">
                             <img
-                                src="/img/woblis.jpg"
-                                alt="Woblis Logo"
+                                src="/img/logoWoblis.png"
+                                alt="Zenit Logo"
                                 className="h-12 w-auto object-contain"
                             />
                         </Link>

@@ -82,7 +82,7 @@ export default function AuthLoginLayout({ children, title, description }: AuthLo
                     <div className="text-center mb-8">
                         <img
                             src="/img/logoWoblis.png"
-                            alt="Woblis Logo"
+                            alt="Zenit Logo"
                             className="h-16 w-auto mx-auto mb-4"
                             onError={(e) => {
                                 e.currentTarget.style.display = 'none';
@@ -100,7 +100,7 @@ export default function AuthLoginLayout({ children, title, description }: AuthLo
                     {/* Additional branding */}
                     <div className="text-center mt-8">
                         <p className="text-gray-400 text-xs">
-                            © 2025 Woblis. Todos los derechos reservados.
+                            © 2025 Zenit. Todos los derechos reservados.
                         </p>
                     </div>
                 </div>
@@ -113,11 +113,11 @@ export default function AuthLoginLayout({ children, title, description }: AuthLo
             >
                 <div className="text-right text-white">
                     <h2 className="text-4xl font-bold mb-4">
-                        Bienvenido a <span className="text-[#7FFF00]">Woblis</span>
+                        Bienvenido a <span className="text-[#7FFF00]">Zenit</span>
                     </h2>
                     <p className="text-lg text-gray-300 max-w-md">
                         261,000 viajes al día.<br />
-                        Woblis los convierte en Insights
+                        Zenit los convierte en Insights
                     </p>
                 </div>
             </div>

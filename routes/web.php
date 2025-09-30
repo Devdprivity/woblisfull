@@ -32,7 +32,7 @@ Route::get('/contacto', function () {
 })->name('contact');
 
 // Blog routes
-Route::prefix('woblog')->name('blog.')->group(function () {
+Route::prefix('zenblog')->name('blog.')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('index');
     Route::get('/buscar', [PostController::class, 'search'])->name('search');
     Route::get('/{post:slug}', [PostController::class, 'show'])->name('show');

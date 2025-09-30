@@ -144,7 +144,7 @@ export default function BlogShow({ post, isLiked, relatedPosts, commentsWithLike
 
     return (
         <BlogLayout>
-            <Head title={`${post.title} - Woblog`} />
+            <Head title={`${post.title} - ZenBlog`} />
 
             <div className="bg-black min-h-screen pt-20">
                 <div className="container mx-auto px-8 py-12">
@@ -153,7 +153,7 @@ export default function BlogShow({ post, isLiked, relatedPosts, commentsWithLike
                         <ol className="flex items-center space-x-2 text-sm text-gray-400">
                             <li>
                                 <Link href={route('blog.index')} className="hover:text-[#7FFF00] transition-colors">
-                                    Woblog
+                                    ZenBlog
                                 </Link>
                             </li>
                             <li>/</li>

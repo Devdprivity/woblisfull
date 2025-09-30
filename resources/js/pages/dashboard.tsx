@@ -187,7 +187,7 @@ export default function Dashboard({ user, stats, recentCampaigns, recentPosts, c
                                     Explora nuestro blog y mantente al día
                                 </p>
                                 <a
-                                    href="/woblog"
+                                    href={route('blog.index')}
                                     className="inline-block bg-[#7FFF00] text-black px-4 py-2 rounded-lg font-semibold hover:bg-[#6FEF00] transition-colors"
                                 >
                                     Ver Blog
@@ -530,7 +530,7 @@ export default function Dashboard({ user, stats, recentCampaigns, recentPosts, c
                                 </p>
                                 <div className="mt-6 space-x-4">
                                     <a
-                                        href="/woblog"
+                                        href={route('blog.index')}
                                         className="inline-block bg-[#7FFF00] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#6FEF00] transition-colors"
                                     >
                                         Ver Blog

@@ -130,7 +130,7 @@ export default function Dashboard({ user }: DashboardProps) {
                                     Explora nuestro blog y mantente al día
                                 </p>
                                 <a
-                                    href="/woblog"
+                                    href={route('blog.index')}
                                     className="inline-block bg-[#7FFF00] text-black px-4 py-2 rounded-lg font-semibold hover:bg-[#6FEF00] transition-colors"
                                 >
                                     Ver Blog

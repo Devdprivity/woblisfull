@@ -11,7 +11,7 @@ import PublicLayout from '@/layouts/public-layout';
 export default function Welcome() {
     return (
         <PublicLayout>
-            <Head title="Woblis - Encuestas para conductores" />
+            <Head title="Zenit - Encuestas para conductores" />
             <main>
                         <WoblisHero />
                         <WoblisAbout />
