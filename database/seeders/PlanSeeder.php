@@ -75,7 +75,7 @@ class PlanSeeder extends Seeder
                 'sort_order' => 3,
             ],
             [
-                'name' => 'Woblis Max',
+                'name' => 'Zenit Max',
                 'slug' => 'woblis-max',
                 'category' => 'corp',
                 'price' => 950000,
@@ -96,7 +96,7 @@ class PlanSeeder extends Seeder
                 'sort_order' => 4,
             ],
             [
-                'name' => 'Woblis Ultra',
+                'name' => 'Zenit Ultra',
                 'slug' => 'woblis-ultra',
                 'category' => 'corp',
                 'price' => 2200000,

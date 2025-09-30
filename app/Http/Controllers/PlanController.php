@@ -18,7 +18,7 @@ class PlanController extends Controller
                     'name' => $plan->name,
                     'slug' => $plan->slug,
                     'category' => $plan->category,
-                    'categoryName' => $plan->is_pyme ? 'Woblis - Pyme' : 'Woblis - Corp',
+                    'categoryName' => $plan->is_pyme ? 'Zenit - Pyme' : 'Zenit - Corp',
                     'price' => $plan->formatted_price,
                     'rawPrice' => $plan->price,
                     'description' => $plan->description,
