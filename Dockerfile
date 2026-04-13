@@ -11,8 +11,12 @@ COPY public/ public/
 COPY vite.config.ts tsconfig.json components.json ./
 RUN npm run build
 
-# ─── Stage 2: Composer – instalar dependencias PHP ────────────────────────────
-FROM composer:2 AS composer-builder
+# ─── Stage 2: Composer – instalar dependencias PHP (usa PHP 8.2 para compatibilidad) ──
+FROM php:8.2-alpine AS composer-builder
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+RUN apk add --no-cache git unzip
 
 WORKDIR /app
 
