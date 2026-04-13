@@ -109,5 +109,5 @@ Route::middleware('auth')->group(function () {
         session(['2fa_verified' => true]);
 
         return redirect()->intended();
-    })->name('two-factor.verify');
+    })->name('two-factor.verify.post');
 });
