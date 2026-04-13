@@ -523,10 +523,10 @@ export default function Dashboard({ user, stats, recentCampaigns, recentPosts, c
                             <div className="text-center py-12">
                                 <PlaceholderPattern className="mx-auto w-32 h-32 stroke-neutral-900/20 dark:stroke-neutral-100/20 mb-4" />
                                 <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-                                    Bienvenido a Woblis
+                                    Bienvenido a Zenit
                                 </h3>
                                 <p className="text-neutral-600 dark:text-neutral-400 max-w-md mx-auto">
-                                    Explora nuestro blog, participa en encuestas y mantente conectado con la comunidad Woblis.
+                                    Explora nuestro blog, participa en encuestas y mantente conectado con la comunidad Zenit.
                                 </p>
                                 <div className="mt-6 space-x-4">
                                     <a

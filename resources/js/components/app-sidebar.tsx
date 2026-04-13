@@ -110,10 +110,10 @@ export function AppSidebar() {
             <SidebarHeader className="p-4">
                 <div className="flex items-center gap-2">
                     <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                        <span className="text-primary-foreground font-bold text-sm">W</span>
+                        <span className="text-primary-foreground font-bold text-sm">Z</span>
                     </div>
                     <span className="font-semibold text-lg group-data-[collapsible=icon]:hidden">
-                        Woblis
+                        Zenit
                     </span>
                 </div>
             </SidebarHeader>

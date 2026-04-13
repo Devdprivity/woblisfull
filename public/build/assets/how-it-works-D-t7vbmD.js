@@ -1,1 +1,0 @@
-import{j as o,L as t}from"./app-F-3B26vM.js";import{Z as r}from"./woblis-how-it-works-D7Z0PNQP.js";import{P as i}from"./public-layout-BIswwc24.js";import"./woblis-footer-CRmWfnpV.js";import"./mobile-nav-Cb35Qmei.js";function p(){return o.jsxs(i,{children:[o.jsx(t,{title:"¿Cómo funciona? - Zenit"}),o.jsx(r,{})]})}export{p as default};

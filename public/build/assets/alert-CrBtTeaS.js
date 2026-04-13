@@ -1,6 +1,0 @@
-import{c as o,a as r,d as i}from"./button-CIV-vOKw.js";import{j as a}from"./app-F-3B26vM.js";/**
- * @license lucide-react v0.475.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const d=[["path",{d:"m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4",key:"g0fldk"}],["path",{d:"m21 2-9.6 9.6",key:"1j0ho8"}],["circle",{cx:"7.5",cy:"15.5",r:"5.5",key:"yqb3hr"}]],g=o("Key",d),c=i("relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",{variants:{variant:{default:"bg-background text-foreground",destructive:"text-destructive-foreground [&>svg]:text-current *:data-[slot=alert-description]:text-destructive-foreground/80"}},defaultVariants:{variant:"default"}});function u({className:t,variant:e,...s}){return a.jsx("div",{"data-slot":"alert",role:"alert",className:r(c({variant:e}),t),...s})}function v({className:t,...e}){return a.jsx("div",{"data-slot":"alert-description",className:r("text-muted-foreground col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed",t),...e})}export{u as A,g as K,v as a};

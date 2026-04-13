@@ -51,7 +51,7 @@ export default function Dashboard({ user }: DashboardProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard - Woblis" />
+            <Head title="Dashboard - Zenit" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
 
                 {/* Welcome Section */}
@@ -62,7 +62,7 @@ export default function Dashboard({ user }: DashboardProps) {
                     <p className="text-gray-600 dark:text-gray-400 mt-2">
                         {user.account_type === 'company'
                             ? `Gestiona tu cuenta empresarial${user.company_name ? ' de ' + user.company_name : ''}`
-                            : 'Explora todas las funcionalidades de Woblis'
+                            : 'Explora todas las funcionalidades de Zenit'
                         }
                     </p>
                 </div>
